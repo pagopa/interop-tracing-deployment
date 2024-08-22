@@ -1,0 +1,13 @@
+name: "tracing-be-tracing-state-updater"
+
+roleArn: "arn:aws:iam::590183909663:role/tracing-be-state-updater-dev"
+
+service:
+  create: false
+
+configmap:
+  APPLICATION_NAME: "pagopa-interop-tracing-state-updater"
+  SQS_ENDPOINT_PROCESSING_ERROR_QUEUE: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-processing-error-dev"
+  SQS_ENDPOINT_ENRICHER_STATE_QUEUE: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-enricher-state-dev"
+  CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "3"
+  API_OPERATIONS_BASEURL: "http://localhost:3000" #TOCHECK

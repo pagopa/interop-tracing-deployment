@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-tracing-store
+  namespace: dev
+data:
+  TRACING_DB_HOST: "tracing-store-dev.cluster-c5qkocuwywyg.eu-south-1.rds.amazonaws.com"
+  TRACING_DB_NAME: "tracing_store"
+  TRACING_DB_PORT: "5432"
+  TRACING_DB_USE_SSL: "true"
