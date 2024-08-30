@@ -11,7 +11,7 @@ service:
 configmap:
   ACCEPTED_AUDIENCES: "http://localhost:4001" #TOCHECK
   APPLICATION_NAME: "interop-tracing-api"
-  API_OPERATIONS_BASEURL: "http://localhost:3000" #TODO TRACING OPERATIONS DNS
+  API_OPERATIONS_BASEURL: "http://tracing-be-tracing-operations:8080" #TODO TRACING OPERATIONS DNS
   CORS_ORIGIN_ALLOWED: "*" #TOCHECK
   S3_BUCKET_NAME: "interop-tracing" #TOCHECK
   #TOCHECK 2nd bucket
