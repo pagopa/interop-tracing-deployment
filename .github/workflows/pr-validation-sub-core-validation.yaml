@@ -61,5 +61,5 @@ jobs:
             exit 1
           fi
 
-          $SCRIPTS_FOLDER/helmLint-main.sh --debug --environment ${{ inputs.environment }} --output console $OPTIONS 
-
+          export PROJECT_DIR=$(pwd)
+          $SCRIPTS_FOLDER/helmLint-main.sh --debug --environment ${{ inputs.environment }} --output console $OPTIONS
