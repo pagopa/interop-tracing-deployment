@@ -94,6 +94,7 @@ jobs:
           path: interop-infra-commons 
           fetch-depth: 0
           sparse-checkout: 'scripts/helm'
+          ref: v1.1.0
           
       - name: Set kubeconfig
         run: |
@@ -159,6 +160,7 @@ jobs:
           path: interop-infra-commons 
           fetch-depth: 0
           sparse-checkout: 'scripts/helm'
+          ref: v1.1.0 
 
       - name: Set kubeconfig
         run: |
