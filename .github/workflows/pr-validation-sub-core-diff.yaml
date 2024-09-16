@@ -57,7 +57,6 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
         with:
           repository: pagopa/interop-infra-commons
-          token: ${{ secrets.GITHUB_TOKEN }}
           path: interop-infra-commons 
           fetch-depth: 0
           sparse-checkout: 'scripts/helm'
@@ -126,12 +125,10 @@ jobs:
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
         with:
           repository: pagopa/interop-infra-commons
-          token: ${{ secrets.GITHUB_TOKEN }}
           path: interop-infra-commons 
           fetch-depth: 0
           sparse-checkout: 'scripts/helm'
-          ref: v1.1.0
-          # ref: ${{ vars.INFRA_COMMONS_TAG }}
+          ref: ${{ vars.INFRA_COMMONS_TAG }}
 
       - name: Set kubeconfig
         run: |
