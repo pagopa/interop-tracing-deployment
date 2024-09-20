@@ -41,7 +41,7 @@ jobs:
           ecs_task_subnet_id: ${{ secrets.SUBNET_ID }}
           ecs_task_sec_group: ${{ secrets.SEC_GROUP_ID }}
           ecs_task_max_duration_seconds: ${{ vars.ECS_TASK_MAX_DURATION_SECONDS }}
-          pat_token: ${{ secrets.PRIVATE_REPOS_PAT }}
+          pat_token: ${{ secrets.BOT_TOKEN }}
           environment: dev
   
   diff:
