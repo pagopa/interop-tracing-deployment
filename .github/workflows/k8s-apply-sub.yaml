@@ -58,7 +58,7 @@ jobs:
 
   workflow_setup:
     name: Setup steps
-    needs: [ initialChecks ]
+    needs: [ initChecks ]
     runs-on: [ self-hosted, "run_id:${{ inputs.environment }}-${{ github.run_id }}" ]
     environment: ${{ inputs.environment }}
     env:
