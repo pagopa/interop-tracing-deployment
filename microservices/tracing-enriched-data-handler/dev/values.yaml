@@ -1,4 +1,4 @@
-name: "tracing-be-tracing-enriched-data-handler-dev"
+name: "tracing-be-enriched-data-handler"
 
 roleArn: "arn:aws:iam::590183909663:role/tracing-be-enriched-data-handler-dev"
 
@@ -6,10 +6,9 @@ service:
   create: false
 
 configmap:
-  DB_SCHEMA_NAME: "dev_tracing" #TOCHECK
-  APPLICATION_NAME: "pagopa-interop-tracing-enriched-data-handler"
+  DB_SCHEMA_NAME: "dev_traces"
+  APPLICATION_NAME: "tracing-enriched-data-handler"
   SQS_ENRICHED_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-enriched-upload-dev" #TOCHECK NAMING
-  SQS_REPLACEMENT_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-replacement-upload-dev" #TOCHECK NAMING
   SQS_ENRICHER_STATE_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-enricher-state-dev" #TOCHECK NAMING
   S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-dev"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"

@@ -1,4 +1,4 @@
-name: "tracing-be-tracing-api"
+name: "tracing-be-api"
 
 roleArn: "arn:aws:iam::590183909663:role/tracing-be-api-dev"
 
@@ -10,12 +10,10 @@ service:
 
 configmap:
   ACCEPTED_AUDIENCES: "http://localhost:4001" #TOCHECK
-  APPLICATION_NAME: "interop-tracing-api"
-  API_OPERATIONS_BASEURL: "http://tracing-be-tracing-operations.dev:8080" #tracing-operations service URL
-  CORS_ORIGIN_ALLOWED: "*" #TOCHECK
-  S3_BUCKET_NAME: "interop-tracing" #TOCHECK
-  #TOCHECK 2nd bucket
-  STORAGE_PATH_NAME: "/tmp" #TOCHECK
+  APPLICATION_NAME: "tracing-api"
+  API_OPERATIONS_BASEURL: "http://tracing-be-tracing-operations.dev:8080"
+  S3_BUCKET_NAME: "tracing-files-dev"
+  STORAGE_PATH_NAME: "/tmp"
 
 deployment:
   env:
@@ -23,13 +21,13 @@ deployment:
     PORT: 8080
   envFromConfigmaps:
     WELL_KNOWN_URLS: "common-jwt.WELL_KNOWN_URLS"
-  livenessProbe: #TOCHECK
+  livenessProbe:
     httpGet:
       path: "/status"
       port: http
     periodSeconds: 5
     initialDelaySeconds: 15
-  readinessProbe: #TOCHECK
+  readinessProbe:
     httpGet:
       path: "/status"
       port: http

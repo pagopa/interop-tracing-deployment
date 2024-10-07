@@ -1,4 +1,4 @@
-name: "tracing-be-tracing-operations"
+name: "tracing-be-operations"
 
 roleArn: "arn:aws:iam::590183909663:role/tracing-be-operations-dev"
 
@@ -8,8 +8,8 @@ service:
   containerPort: 8080
 
 configmap:
-  SCHEMA_NAME: "dev_tracing" #TOCHECK
-  APPLICATION_NAME: "pagopa-interop-tracing-operations"
+  SCHEMA_NAME: "dev_tracing"
+  APPLICATION_NAME: "tracing-operations"
 
 deployment:
   env:
@@ -22,13 +22,13 @@ deployment:
   envFromSecrets:
     DB_USERNAME: "tracing-store-tracing-operations-user.username"
     DB_PASSWORD: "tracing-store-tracing-operations-user.password"
-  livenessProbe: #TOCHECK
+  livenessProbe:
     httpGet:
       path: "/status"
       port: http
     periodSeconds: 5
     initialDelaySeconds: 15
-  readinessProbe: #TOCHECK
+  readinessProbe:
     httpGet:
       path: "/status"
       port: http

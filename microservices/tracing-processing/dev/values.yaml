@@ -1,4 +1,4 @@
-name: "tracing-be-tracing-processing"
+name: "tracing-be-processing"
 
 roleArn: "arn:aws:iam::590183909663:role/tracing-be-processing-dev"
 
@@ -7,7 +7,7 @@ service:
 
 configmap:
   DB_SCHEMA_NAME: "dev_tracing"
-  APPLICATION_NAME: "pagopa-interop-tracing-processing"
+  APPLICATION_NAME: "tracing-processing"
   SQS_TRACING_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-upload-dev"
   SQS_PROCESSING_ERROR_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-processing-error-dev"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"
