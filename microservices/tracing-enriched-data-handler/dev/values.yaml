@@ -19,5 +19,5 @@ deployment:
     DB_NAME: "common-tracing-store.TRACING_DB_NAME"
     DB_PORT: "common-tracing-store.TRACING_DB_PORT"
   envFromSecrets:
-    DB_USERNAME: "tracing-store-tracing-enriched-data-handler-user.username"
-    DB_PASSWORD: "tracing-store-tracing-enriched-data-handler-user.password"
+    DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
+    DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"

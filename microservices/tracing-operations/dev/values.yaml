@@ -20,8 +20,8 @@ deployment:
     DB_NAME: "common-tracing-store.TRACING_DB_NAME"
     DB_PORT: "common-tracing-store.TRACING_DB_PORT"
   envFromSecrets:
-    DB_USERNAME: "tracing-store-tracing-operations-user.username"
-    DB_PASSWORD: "tracing-store-tracing-operations-user.password"
+    DB_USERNAME: "tracing-store-operations-user.username"
+    DB_PASSWORD: "tracing-store-operations-user.password"
   livenessProbe:
     httpGet:
       path: "/status"
