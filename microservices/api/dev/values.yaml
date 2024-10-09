@@ -11,7 +11,7 @@ service:
 configmap:
   ACCEPTED_AUDIENCES: "http://localhost:4001" #TOCHECK
   APPLICATION_NAME: "tracing-api"
-  API_OPERATIONS_BASEURL: "http://tracing-be-tracing-operations.dev:8080"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.dev:8080"
   S3_BUCKET_NAME: "tracing-files-dev"
   STORAGE_PATH_NAME: "/tmp"
 

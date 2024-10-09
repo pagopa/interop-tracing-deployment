@@ -7,7 +7,7 @@ service:
 
 configmap:
   APPLICATION_NAME: "tracing-eservice-event-consumer"
-  API_OPERATIONS_BASEURL: "http://tracing-be-tracing-operations.dev:8080" 
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.dev:8080" 
   KAFKA_GROUP_ID: "tracing-dev-eservice-event-consumer"
   TOPIC_STARTING_OFFSET: "earliest"
 

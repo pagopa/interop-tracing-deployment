@@ -10,4 +10,4 @@ configmap:
   SQS_ENDPOINT_PROCESSING_ERROR_QUEUE: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-processing-error-dev"
   SQS_ENDPOINT_ENRICHER_STATE_QUEUE: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-enricher-state-dev"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "3"
-  API_OPERATIONS_BASEURL: "http://tracing-be-tracing-operations.dev:8080"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.dev:8080"
