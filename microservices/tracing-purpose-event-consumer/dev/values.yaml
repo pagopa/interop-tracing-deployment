@@ -1,0 +1,20 @@
+name: "tracing-be-purpose-event-consumer"
+
+roleArn: "arn:aws:iam::590183909663:role/tracing-be-purpose-event-consumer-dev"
+
+service:
+  create: false
+
+configmap:
+  APPLICATION_NAME: "tracing-purpose-event-consumer"
+  API_OPERATIONS_BASEURL: "http://tracing-be-tracing-operations.dev:8080" 
+  KAFKA_GROUP_ID: "tracing-dev-purpose-event-consumer"
+  TOPIC_STARTING_OFFSET: "earliest"
+
+deployment: 
+  envFromConfigmaps:
+    KAFKA_BROKERS: "common-kafka.KAFKA_BROKERS"
+    KAFKA_TOPIC: "common-kafka.PURPOSE_TOPIC"
+  envFromFieldRef:
+    KAFKA_CLIENT_ID: "metadata.name"
+    AWS_ROLE_SESSION_NAME: "metadata.name"
