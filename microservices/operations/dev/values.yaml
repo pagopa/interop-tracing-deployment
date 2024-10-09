@@ -8,8 +8,9 @@ service:
   containerPort: 8080
 
 configmap:
-  SCHEMA_NAME: "dev_tracing"
+  DB_SCHEMA_NAME: "dev_tracing"
   APPLICATION_NAME: "tracing-operations"
+  S3_BUCKET_NAME: "interop-tracing-files-dev"
 
 deployment:
   flywayInitContainer:
