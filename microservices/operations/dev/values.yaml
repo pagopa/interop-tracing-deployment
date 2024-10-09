@@ -20,8 +20,7 @@ deployment:
       FLYWAY_PLACEHOLDER_REPLACEMENT: true
       FLYWAY_PLACEHOLDERS_NAMESPACE: "dev"
       FLYWAY_URL: jdbc:postgresql://$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)
-      FLYWAY_DEFAULT_SCHEMA: "dev_flyway"
-      FLYWAY_SCHEMAS: "dev_flyway,dev_tracing"
+      FLYWAY_SCHEMAS: "dev_tracing"
     envFromConfigmaps:
       POSTGRES_HOST: "common-tracing-store.DB_HOST_RW"
       POSTGRES_PORT: "common-tracing-store.DB_PORT"
