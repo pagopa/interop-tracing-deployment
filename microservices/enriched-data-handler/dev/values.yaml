@@ -35,6 +35,7 @@ deployment:
     DB_HOST: "common-tracing-store.DB_HOST_RW"
     DB_NAME: "common-tracing-store.DB_NAME"
     DB_PORT: "common-tracing-store.DB_PORT"
+    DB_USE_SSL: "common-tracing-store.DB_USE_SSL"
   envFromSecrets:
     DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
     DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"
