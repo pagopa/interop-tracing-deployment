@@ -1,5 +1,7 @@
 name: "tracing-be-tenant-event-consumer"
 
+replicas: 0
+
 roleArn: "arn:aws:iam::590183909663:role/tracing-be-tenant-event-consumer-dev"
 
 service:
