@@ -1,0 +1,14 @@
+name: "tracing-be-missing-data-checker"
+
+techStack: "nodejs"
+
+schedule: "30 0 * * *"
+timeZone: "Europe/Rome"
+
+concurrencyPolicy: "Forbid"
+activeDeadlineSeconds: 3600
+
+configmap:
+  APPLICATION_NAME: "tracing-missing-data-checker"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.dev:8080"
+  DAYS_OFFSET_FROM_TODAY: "2"

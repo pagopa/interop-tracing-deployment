@@ -1,5 +1,4 @@
 namespace: "dev"
-replicas: 1
 
 image:
   repositoryPrefix: "590183909663.dkr.ecr.eu-south-1.amazonaws.com"
@@ -7,10 +6,14 @@ image:
   tag: $IMAGE_TAG_PLACEHOLDER
   digest: $IMAGE_DIGEST_PLACEHOLDER
 
+job:
+  env:
+    LOG_LEVEL: "info"
+
 resources:
   requests:
-    cpu: "2"
+    cpu: "1"
     memory: "2Gi"
   limits:
-    cpu: "2"
+    cpu: "1"
     memory: "2Gi"
