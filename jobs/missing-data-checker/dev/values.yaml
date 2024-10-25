@@ -2,7 +2,7 @@ name: "tracing-be-missing-data-checker"
 
 techStack: "nodejs"
 
-schedule: "30 0 * * *"
+schedule: "50 23 * * *"
 timeZone: "Europe/Rome"
 
 concurrencyPolicy: "Forbid"
