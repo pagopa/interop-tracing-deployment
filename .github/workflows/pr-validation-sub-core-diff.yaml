@@ -12,6 +12,8 @@ on:
         required: true
       EKS_CLUSTER_NAME:
         required: true
+      PRIVATE_REPOS_SSH_KEY:
+        required: true
 
 defaults:
   run:
@@ -34,6 +36,17 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+      - name: Kube-linter download
+        run: |
+          set -euo pipefail
+
+          curl -sSLO https://github.com/stackrox/kube-linter/releases/download/v0.7.1/kube-linter-linux_arm64.tar.gz
+          tar -xzf kube-linter-linux_arm64.tar.gz
+          chmod +x kube-linter-linux_arm64/kube-linter
+          sudo mv kube-linter-linux_arm64/kube-linter /usr/local/bin/kube-linter
+
+          kube-linter --version
+
       - id: set-outputs
         run: |
           echo "microservices=$(find microservices -type f -path "*/$TARGET_ENVIRONMENT/values.yaml" -exec dirname {} \; | awk -F'/' '{print $2}' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
@@ -44,6 +57,7 @@ jobs:
     needs: [ workflow_setup ]
     runs-on: [self-hosted, "run_id:${{ inputs.environment }}-${{ github.run_id }}"]
     environment: ${{ inputs.environment }}
+    if: ${{ ! contains(needs.workflow_setup.outputs.microservices, '[]') }}
     strategy:
       matrix:
         microservice: ${{ fromJson(needs.workflow_setup.outputs.microservices) }}
@@ -52,7 +66,6 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
-
       - name: Checkout scripts repository
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
         with:
@@ -60,10 +73,8 @@ jobs:
           path: interop-infra-commons 
           fetch-depth: 0
           sparse-checkout: 'scripts/helm'
-          #token: ${{ secrets.PRIVATE_REPOS_PAT }}
-          ssh-key: ${{ secrets.PRIVATE_REPOS_SSH_KEY }}
           ref: ${{ vars.INFRA_COMMONS_TAG }}
-
+          ssh-key: ${{ secrets.PRIVATE_REPOS_SSH_KEY }}
       - name: Set kubeconfig
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
@@ -75,7 +86,20 @@ jobs:
           set -euo pipefail
           
           export PROJECT_DIR=$(pwd)
+
           $SCRIPTS_FOLDER/helmTemplate-svc-single.sh --debug --environment ${{ inputs.environment }} --microservice $MICROSERVICE_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console
+
+      - name: Microservice Kube-Linter
+        id: microservice_kube_lineter
+        env: 
+          MICROSERVICE_NAME: ${{ matrix.microservice }}
+        run: |
+          set -euo pipefail
+          
+          export PROJECT_DIR=$(pwd)
+
+          $SCRIPTS_FOLDER/helmTemplate-svc-single.sh --debug --environment ${{ inputs.environment }} --microservice $MICROSERVICE_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console | kube-linter lint -
+
       - name: Kubectl Diff
         id: kubectl_diff
         env: 
@@ -85,7 +109,9 @@ jobs:
 
           set +e
           export PROJECT_DIR=$(pwd)
+
           $SCRIPTS_FOLDER/kubectlDiff-svc-single-standalone.sh --environment ${{ inputs.environment }} --microservice $MICROSERVICE_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console
+
           DIFF_EXIT_CODE=$?
           set -e
           
@@ -94,8 +120,8 @@ jobs:
           elif [[ $DIFF_EXIT_CODE == 1 ]]; then
             echo "Diff Output: Diff has been found for ${MICROSERVICE_NAME}"
             
-            touch microservices_${MICROSERVICE_NAME}_diff.txt
-            echo $MICROSERVICE_NAME >> microservices_${MICROSERVICE_NAME}_diff.txt
+            touch ${{ inputs.environment }}_microservices_${MICROSERVICE_NAME}_diff.txt
+            echo $MICROSERVICE_NAME >> ${{ inputs.environment }}_microservices_${MICROSERVICE_NAME}_diff.txt
             echo "diff=true" >> $GITHUB_OUTPUT
           else
             echo "::error title=Diff Error::Error occurred during diff, exit code $DIFF_EXIT_CODE"
@@ -105,8 +131,8 @@ jobs:
         if: ${{ steps.kubectl_diff.outputs.diff }}
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
         with:
-          name: microservices_${{ matrix.microservice }}_diff
-          path: microservices_${{ matrix.microservice }}_diff.txt
+          name: ${{ inputs.environment }}_microservices_${{ matrix.microservice }}_diff
+          path: ${{ inputs.environment }}_microservices_${{ matrix.microservice }}_diff.txt
           retention-days: 1
 
   diff_cronjobs:
@@ -114,6 +140,7 @@ jobs:
     needs: [ workflow_setup ]
     runs-on: [ self-hosted, "run_id:${{ inputs.environment }}-${{ github.run_id }}" ]
     environment: ${{ inputs.environment }}
+    if: ${{ ! contains(needs.workflow_setup.outputs.cronjobs, '[]') }}
     strategy:
       matrix:
         cronjob: ${{ fromJson(needs.workflow_setup.outputs.cronjobs) }}
@@ -122,7 +149,6 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
-
       - name: Checkout scripts repository
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
         with:
@@ -130,10 +156,8 @@ jobs:
           path: interop-infra-commons 
           fetch-depth: 0
           sparse-checkout: 'scripts/helm'
-          #token: ${{ secrets.PRIVATE_REPOS_PAT }}
-          ssh-key: ${{ secrets.PRIVATE_REPOS_SSH_KEY }}
           ref: ${{ vars.INFRA_COMMONS_TAG }}
-
+          ssh-key: ${{ secrets.PRIVATE_REPOS_SSH_KEY }}
       - name: Set kubeconfig
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
@@ -145,13 +169,28 @@ jobs:
           set -euo pipefail
           
           export PROJECT_DIR=$(pwd)
+
           $SCRIPTS_FOLDER/helmTemplate-cron-single.sh --debug --environment ${{ inputs.environment }} --job $CRONJOB_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console
+          
+      - name: Cronjob Kube-Linter
+        id: cronjob_kube_lineter
+        env: 
+          CRONJOB_NAME: ${{ matrix.cronjob }}
+        run: |
+          set -euo pipefail
+          
+          export PROJECT_DIR=$(pwd)
+
+          $SCRIPTS_FOLDER/helmTemplate-cron-single.sh --debug --environment ${{ inputs.environment }} --job $CRONJOB_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console | kube-linter lint -
+
       - name: Kubectl Diff
         id: kubectl_diff
         env: 
           CRONJOB_NAME: ${{ matrix.cronjob }}
         run: |
           set -euo pipefail
+
+          export PROJECT_DIR=$(pwd)
 
           set +e
           $SCRIPTS_FOLDER/kubectlDiff-cron-single-standalone.sh --environment ${{ inputs.environment }} --job $CRONJOB_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console
@@ -163,8 +202,8 @@ jobs:
           elif [[ $DIFF_EXIT_CODE == 1 ]]; then
             echo "Diff Output: Diff has been found for ${CRONJOB_NAME}"
             
-            touch cronjobs_${CRONJOB_NAME}_diff.txt
-            echo $CRONJOB_NAME >> cronjobs_${CRONJOB_NAME}_diff.txt
+            touch ${{ inputs.environment }}_cronjobs_${CRONJOB_NAME}_diff.txt
+            echo $CRONJOB_NAME >> ${{ inputs.environment }}_cronjobs_${CRONJOB_NAME}_diff.txt
             echo "diff=true" >> $GITHUB_OUTPUT
           else
             echo "::error title=Diff Error::Error occurred during diff, exit code $DIFF_EXIT_CODE"
@@ -174,57 +213,6 @@ jobs:
         if: ${{ steps.kubectl_diff.outputs.diff }}
         uses: actions/upload-artifact@65462800fd760344b1a7b4382951275a0abb4808
         with:
-          name: cronjobs_${{ matrix.cronjob }}_diff.txt
-          path: cronjobs_${{ matrix.cronjob }}_diff.txt
+          name: ${{ inputs.environment }}_cronjobs_${{ matrix.cronjob }}_diff.txt
+          path: ${{ inputs.environment }}_cronjobs_${{ matrix.cronjob }}_diff.txt
           retention-days: 1
-
-  print_summary:
-    name: Print Diff Summary
-    if: ${{ always() }}
-    needs: [ workflow_setup, diff_microservices, diff_cronjobs ]
-    runs-on: [ self-hosted, "run_id:${{ inputs.environment }}-${{ github.run_id }}" ]
-    environment: ${{ inputs.environment }}
-    steps:
-      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
-      - name: Download microservices diff artifact
-        uses: actions/download-artifact@65a9edc5881444af0b9093a5e628f2fe47ea3b2e
-        with:
-          path: diff-artifacts
-          merge-multiple: true
-      - name: Print summary
-        run: |
-          set -euo pipefail
-          
-          if [ -d diff-artifacts ]; then
-
-            microservices=$(ls -R diff-artifacts | { grep -i "microservice" || :; }| sed 's/_diff.txt//g' | sed 's/microservices_//g' |  tr "\n" ",")
-            cronjobs=$(ls -R diff-artifacts | { grep -i "cronjob" || :; } | sed 's/_diff.txt//g' | sed 's/cronjobs_//g' | tr "\n" ",")
-
-            
-            echo "### K8s Diff Summary" >> $GITHUB_STEP_SUMMARY
-            
-            if [ -n "$microservices" ]; then
-              IFS=',' read -r -a MICROSERVICES_WITH_DIFF <<< "$microservices"
-              if [ -n "$MICROSERVICES_WITH_DIFF" ]; then
-              echo "#### Microservices:" >> $GITHUB_STEP_SUMMARY
-              fi
-
-              for item in ${MICROSERVICES_WITH_DIFF[@]}; do
-              echo "- $item" >> $GITHUB_STEP_SUMMARY
-              done
-            fi
-            
-            if [ -n "$cronjobs" ]; then
-              IFS=',' read -r -a CRONJOBS_WITH_DIFF <<< "$cronjobs"
-              if [ -n "$CRONJOBS_WITH_DIFF" ]; then
-                echo "#### Cronjobs:" >> $GITHUB_STEP_SUMMARY
-              fi          
-              for item in ${CRONJOBS_WITH_DIFF[@]}; do
-                echo "- $item" >> $GITHUB_STEP_SUMMARY
-              done
-            fi
-
-          else
-            echo "No diff found" >> $GITHUB_STEP_SUMMARY
-          fi
-

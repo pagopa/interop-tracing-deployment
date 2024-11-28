@@ -1,6 +1,7 @@
 name: "tracing-be-state-updater"
 
-roleArn: "arn:aws:iam::590183909663:role/tracing-be-state-updater-dev"
+serviceAccount:
+  roleArn: "arn:aws:iam::590183909663:role/tracing-be-state-updater-dev"
 
 service:
   create: false

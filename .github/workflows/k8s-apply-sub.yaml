@@ -17,6 +17,7 @@ on:
       EKS_CLUSTER_NAME:
         required: true
 
+  
 defaults:
   run:
     shell: bash
@@ -40,7 +41,9 @@ jobs:
         run: |
           set -euo pipefail
           TEAMS_LIST=$(echo $TEAMS | tr "," "\n")
+
           CHECK_SUCCESS=0
+
           for TEAM in $TEAMS_LIST; do
             set +e
             # Check current user membership with gh api 
@@ -50,6 +53,7 @@ jobs:
             
             # Extract the HTTP status code
             HTTP_CODE=$(echo $GH_TEAM_MEMBERSHIP_RESPONSE | head -n 1 | cut -d' ' -f 2)
+
             if [[ $HTTP_CODE -eq 200 ]]; then
               echo "User is member of $TEAM"
               CHECK_SUCCESS=1
@@ -63,8 +67,8 @@ jobs:
             echo "::error:: Resource not found. Please check the organization ($ORG), team ($TEAMS), and username ($USER). $USER is not memeber of specified teams."
             exit 1
           fi
-          echo "$USER has the correct permissions to execute the workflow."
 
+          echo "$USER has the correct permissions to execute the workflow."
   workflow_setup:
     name: Setup steps
     needs: [ initChecks ]
@@ -119,6 +123,7 @@ jobs:
     runs-on: [ self-hosted, "run_id:${{ inputs.environment }}-${{ github.run_id }}" ]
     environment: ${{ inputs.environment }}
     needs: [workflow_setup, deploy_common_configmaps]
+    if: ${{ ! contains(needs.workflow_setup.outputs.microservices, '[]') }}
     strategy:
       matrix:
         microservice: ${{ fromJson(needs.workflow_setup.outputs.microservices) }}
@@ -127,7 +132,6 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
-
       - name: Checkout scripts repository
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
         with:
@@ -135,58 +139,83 @@ jobs:
           path: interop-infra-commons 
           fetch-depth: 0
           sparse-checkout: 'scripts/helm'
-          #token: ${{ secrets.PRIVATE_REPOS_PAT }}
-          ssh-key: ${{ secrets.PRIVATE_REPOS_SSH_KEY }}
           ref: ${{ vars.INFRA_COMMONS_TAG }}
-          
+          ssh-key: ${{ secrets.PRIVATE_REPOS_SSH_KEY }}
       - name: Set kubeconfig
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
-      - name: Deploy
-        env:
+      - name: Kubectl Diff
+        id: kubectl_diff
+        env: 
           MICROSERVICE_NAME: ${{ matrix.microservice }}
-          K8S_NAMESPACE: ${{ inputs.environment }}
-          TIMEOUT_SECONDS: ${{ inputs.timeout_seconds }}
         run: |
           set -euo pipefail
 
+          set +e
           export PROJECT_DIR=$(pwd)
-          $SCRIPTS_FOLDER/kubectlApply-svc-single-standalone.sh --debug --environment $K8S_NAMESPACE -m $MICROSERVICE_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console 
 
-          CURRENT_SVC=$(kubectl get deployments -n $K8S_NAMESPACE | awk '{if (NR!=1) print $1}' | grep -v grep | grep -i $MICROSERVICE_NAME) 
-          
-          MAX_WAIT_TIME_SECONDS=$TIMEOUT_SECONDS
-          CYCLE_SLEEP_SECONDS=5
-          
-          CURRENT_DATE_SECONDS=$(date +%s)
-          WAIT_EXP_SECONDS=$(($CURRENT_DATE_SECONDS + $MAX_WAIT_TIME_SECONDS))
-          SVC_ROLLOUT_STATUS=1
+          $SCRIPTS_FOLDER/kubectlDiff-svc-single-standalone.sh --environment ${{ inputs.environment }} --microservice $MICROSERVICE_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console
 
-          while [[ $CURRENT_DATE_SECONDS -lt $WAIT_EXP_SECONDS ]]
-          do
-            set +e
-            kubectl rollout status -n $K8S_NAMESPACE deployment/$CURRENT_SVC > /dev/null
-            SVC_ROLLOUT_STATUS=$?
-            set -e
-            
-            if [[ $SVC_ROLLOUT_STATUS  -eq 0 ]]; then
-              echo "INFO -" $CURRENT_SVC "deployed"
-              break
+          DIFF_EXIT_CODE=$?
+          set -e
+          
+          if [[ $DIFF_EXIT_CODE == 0 ]]; then
+            echo "Diff Output: No diff has been found for ${MICROSERVICE_NAME}"
+          elif [[ $DIFF_EXIT_CODE == 1 ]]; then
+            echo "Diff Output: Diff has been found for ${MICROSERVICE_NAME}"
+          else
+            echo "::error title=Diff Error::Error occurred during diff, exit code $DIFF_EXIT_CODE"
+            exit $DIFF_EXIT_CODE
+          fi
+      - name: Deploy
+        env:
+          MICROSERVICE_NAME: ${{ matrix.microservice }}
+          MICROSERVICE_FULLNAME: tracing-be-${{ matrix.microservice }}
+          K8S_NAMESPACE: ${{ inputs.environment }}
+          TIMEOUT_SECONDS: ${{ inputs.timeout_seconds }}
+          FORCE_ROLLOUT: ${{ inputs.force_restart }}
+
+        run: |
+          set -euo pipefail
+
+          TIMEOUT="${TIMEOUT_SECONDS}s"
+          
+          export PROJECT_DIR=$(pwd)
+          echo "INFO - Apply changes for $MICROSERVICE_FULLNAME."
+          "$SCRIPTS_FOLDER/kubectlApply-svc-single-standalone.sh" --debug --environment "$K8S_NAMESPACE" -m "$MICROSERVICE_NAME" -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console
+
+          DESIRED_REPLICAS=$(kubectl get deployment "$MICROSERVICE_FULLNAME" -n "$K8S_NAMESPACE" -o jsonpath='{.spec.replicas}')
+          echo "INFO - Desired replicas: $DESIRED_REPLICAS"
+          if [ "$DESIRED_REPLICAS" -eq 0 ]; then
+            echo "::info::INFO - Desired replicas for $MICROSERVICE_FULLNAME are 0. Stopping further operations."
+            exit 0
+          fi
+
+          # Check if the force rollout flag is true
+          if [ "$FORCE_ROLLOUT" = true ]; then
+            echo "::info::INFO - Force rollout restart requested $MICROSERVICE_FULLNAME."
+            if ! kubectl rollout status -n "$K8S_NAMESPACE" "deployment/$MICROSERVICE_FULLNAME" --watch=false >/dev/null 2>&1; then
+              echo "::info::INFO - Rollout already active for $MICROSERVICE_FULLNAME. No force restart needed."
             else
-              echo  "::warning::WARNING - " $CURRENT_SVC  "not yet deployed"
+              echo "INFO - No rollout in progress, forcing a rollout restart."
+              kubectl rollout restart -n "$K8S_NAMESPACE" "deployment/$MICROSERVICE_FULLNAME"
             fi
-            
-            sleep $CYCLE_SLEEP_SECONDS
-            CURRENT_DATE_SECONDS=$(date +%s)
-          done
+          fi
 
-          exit $SVC_ROLLOUT_STATUS
+          echo "INFO - Wait for the rollout of the $MICROSERVICE_FULLNAME to finish (Max $TIMEOUT)."
+          if ! kubectl rollout status -n "$K8S_NAMESPACE" "deployment/$MICROSERVICE_FULLNAME" --timeout="$TIMEOUT" --watch >/dev/null 2>&1; then
+            echo "::error::ERROR - Rollout for $MICROSERVICE_FULLNAME failed or exceeded $TIMEOUT."
+            exit 1
+          fi
+
+          echo "INFO - Rollout for $MICROSERVICE_FULLNAME completed successfully."
 
   deploy_cj:
     name: ${{ matrix.cronjob }}
     runs-on: [ self-hosted, "run_id:${{ inputs.environment }}-${{ github.run_id }}" ]
     environment: ${{ inputs.environment }}
     needs: [workflow_setup, deploy_common_configmaps]
+    if: ${{ ! contains(needs.workflow_setup.outputs.cronjobs, '[]') }}
     strategy:
       matrix:
         cronjob: ${{ fromJson(needs.workflow_setup.outputs.cronjobs) }}
@@ -195,7 +224,6 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
-
       - name: Checkout scripts repository
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
         with:
@@ -203,13 +231,33 @@ jobs:
           path: interop-infra-commons 
           fetch-depth: 0
           sparse-checkout: 'scripts/helm'
-          #token: ${{ secrets.PRIVATE_REPOS_PAT }}
-          ssh-key: ${{ secrets.PRIVATE_REPOS_SSH_KEY }}
           ref: ${{ vars.INFRA_COMMONS_TAG }}
-
+          ssh-key: ${{ secrets.PRIVATE_REPOS_SSH_KEY }}
       - name: Set kubeconfig
         run: |
           aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
+      - name: Kubectl Diff
+        id: kubectl_diff
+        env: 
+          CRONJOB_NAME: ${{ matrix.cronjob }}
+        run: |
+          set -euo pipefail
+
+          export PROJECT_DIR=$(pwd)
+
+          set +e
+          $SCRIPTS_FOLDER/kubectlDiff-cron-single-standalone.sh --environment ${{ inputs.environment }} --job $CRONJOB_NAME -i $PROJECT_DIR/commons/${{ inputs.environment }}/images.yaml --output console
+          DIFF_EXIT_CODE=$?
+          set -e
+          
+          if [[ $DIFF_EXIT_CODE == 0 ]]; then
+            echo "Diff Output: No diff has been found for ${CRONJOB_NAME}"
+          elif [[ $DIFF_EXIT_CODE == 1 ]]; then
+            echo "Diff Output: Diff has been found for ${CRONJOB_NAME}"
+          else
+            echo "::error title=Diff Error::Error occurred during diff, exit code $DIFF_EXIT_CODE"
+            exit $DIFF_EXIT_CODE
+          fi
       - name: Deploy
         env:
           CRONJOB_NAME: ${{ matrix.cronjob }}
