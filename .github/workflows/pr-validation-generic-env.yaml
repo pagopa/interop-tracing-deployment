@@ -1,25 +1,35 @@
-name: DEV - PR Validation
+name: Generic PR Validation
 
-on:
-  pull_request:
-    types: [opened, edited, reopened, synchronize]      
+on: 
+  workflow_call:
+    inputs:
+      environment:
+        description: 'Environment to run diff against'
+        required: true
+        type: string
+    secrets:
+      AWS_REGION:
+        required: true
+      EKS_CLUSTER_NAME:
+        required: true
 
 permissions:
   id-token: write
   contents: read
-  
+
 jobs:
   lint:
     secrets: inherit
     uses: ./.github/workflows/pr-validation-sub-core-validation.yaml
     with:
-      environment: dev
+      environment: ${{ inputs.environment }}
   
   create_runner:
-    name: Create Self-Hosted Runner
+    name: "[${{ inputs.environment }}] Create Self-Hosted"
     runs-on: ubuntu-22.04
+    if: ${{ vars.ENABLE_KUBE_DIFF == 'true' }}
     needs: [ lint ]
-    environment: dev
+    environment: ${{ inputs.environment }}
     outputs:
       ecs_task_id: ${{ steps.start_runner.outputs.ecs_task_id }}
     strategy:
@@ -27,7 +37,7 @@ jobs:
         index: [1,2,3]
       fail-fast: false
     steps:
-      - name: Start GitHub Runner
+      - name: "[${{ inputs.environment }}] Start GitHub Runner"
         id: start_runner
         uses: pagopa/interop-github-runner-aws-create-action@main
         with:
@@ -42,21 +52,21 @@ jobs:
           ecs_task_sec_group: ${{ secrets.SEC_GROUP_ID }}
           ecs_task_max_duration_seconds: ${{ vars.ECS_TASK_MAX_DURATION_SECONDS }}
           pat_token: ${{ secrets.BOT_TOKEN }}
-          environment: dev
+          environment: ${{ inputs.environment }}
   
   diff:
-    needs: [ lint, create_runner ]
+    needs: [ create_runner ]
     secrets: inherit
     uses: ./.github/workflows/pr-validation-sub-core-diff.yaml
     with:
-      environment: dev
+      environment: ${{ inputs.environment }}
 
   delete_runner:
-    name: Delete Self-Hosted Runner
-    needs: [lint, create_runner, diff]
-    if: ${{ always() }}
+    name: "[${{ inputs.environment }}] Delete Self-Hosted Runner"
+    needs: [ diff ]
+    if: ${{ vars.ENABLE_KUBE_DIFF == 'true' }}
     runs-on: ubuntu-22.04
-    environment: dev
+    environment: ${{ inputs.environment }}
     strategy:
       matrix:
         index: [1,2,3]
@@ -70,5 +80,5 @@ jobs:
           iam_role_arn: ${{ secrets.ECS_IAM_ROLE_ARN }}
           ecs_cluster_name: ${{ secrets.ECS_CLUSTER_NAME }}
           pat_token: ${{ secrets.BOT_TOKEN }}
-          environment: dev
+          environment: ${{ inputs.environment }}
     
