@@ -1,6 +1,7 @@
 name: "tracing-be-enriched-data-handler"
 
-roleArn: "arn:aws:iam::590183909663:role/tracing-be-enriched-data-handler-dev"
+serviceAccount:
+  roleArn: "arn:aws:iam::590183909663:role/tracing-be-enriched-data-handler-dev"
 
 service:
   create: false

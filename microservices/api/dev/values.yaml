@@ -1,6 +1,7 @@
 name: "tracing-be-api"
 
-roleArn: "arn:aws:iam::590183909663:role/tracing-be-api-dev"
+serviceAccount:
+  roleArn: "arn:aws:iam::590183909663:role/tracing-be-api-dev"
 
 service:
   create: true

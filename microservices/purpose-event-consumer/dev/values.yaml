@@ -1,6 +1,7 @@
 name: "tracing-be-purpose-event-consumer"
 
-roleArn: "arn:aws:iam::590183909663:role/tracing-be-purpose-event-consumer-dev"
+serviceAccount:
+  roleArn: "arn:aws:iam::590183909663:role/tracing-be-purpose-event-consumer-dev"
 
 service:
   create: false

@@ -1,8 +1,7 @@
 name: "tracing-be-tenant-event-consumer"
 
-replicas: 0
-
-roleArn: "arn:aws:iam::590183909663:role/tracing-be-tenant-event-consumer-dev"
+serviceAccount:
+  roleArn: "arn:aws:iam::590183909663:role/tracing-be-tenant-event-consumer-dev"
 
 service:
   create: false
@@ -14,6 +13,7 @@ configmap:
   TOPIC_STARTING_OFFSET: "earliest"
 
 deployment: 
+  replicas: 0
   envFromConfigmaps:
     KAFKA_BROKERS: "common-kafka.KAFKA_BROKERS"
     KAFKA_TOPIC: "common-kafka.TENANT_TOPIC"
