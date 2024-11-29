@@ -1,6 +1,8 @@
-namespace: "dev"
+namespace: "att"
+techStack: "nodejs"
 
-cronjob:
+deployment:
+  replicas: 1
   env:
     LOG_LEVEL: "info"
   image:
@@ -10,8 +12,8 @@ cronjob:
     digest: $IMAGE_DIGEST_PLACEHOLDER
   resources:
     requests:
-      cpu: "1"
+      cpu: "2"
       memory: "2Gi"
     limits:
-      cpu: "1"
+      cpu: "2"
       memory: "2Gi"
