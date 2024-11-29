@@ -46,8 +46,6 @@ data:
       consumer_id UUID NOT NULL,
       eservice_id UUID NOT NULL,
       purpose_title VARCHAR(2048) NOT NULL,
-      FOREIGN KEY (consumer_id) REFERENCES "${NAMESPACE}_tracing".tenants(id),
-      FOREIGN KEY (eservice_id) REFERENCES "${NAMESPACE}_tracing".eservices(eservice_id)
     );
 
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".purposes TO
@@ -68,7 +66,6 @@ data:
       errors BOOLEAN NOT NULL DEFAULT false,
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (tenant_id) REFERENCES "${NAMESPACE}_tracing".tenants(id)
     );
 
     GRANT SELECT, INSERT, UPDATE ON TABLE "${NAMESPACE}_tracing".tracings TO
@@ -87,7 +84,6 @@ data:
       message VARCHAR(2048) NOT NULL,
       row_number INT NOT NULL,
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (tracing_id) REFERENCES "${NAMESPACE}_tracing".tracings(id)
     );
 
     GRANT SELECT, INSERT, UPDATE ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
