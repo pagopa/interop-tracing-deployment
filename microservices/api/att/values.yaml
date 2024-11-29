@@ -10,7 +10,7 @@ service:
   targetGroupArn: "arn:aws:elasticloadbalancing:eu-south-1:225989375416:targetgroup/att-tracing-api/c77a14bbdaabb03b"
 
 configmap:
-  ACCEPTED_AUDIENCES: "http://localhost:4001"
+  ACCEPTED_AUDIENCES: "att.interop.pagopa.it/m2m"
   APPLICATION_NAME: "tracing-api"
   API_OPERATIONS_BASEURL: "http://tracing-be-operations.att:8080"
   S3_BUCKET_NAME: "tracing-files-att"
