@@ -9,7 +9,7 @@ data:
 
     GRANT USAGE ON SCHEMA ${NAMESPACE}_traces to 
       tracing_enriched_data_handler_user
-      traces_readonly_user;
+      tracing_readonly_user;
 
     CREATE TABLE "${NAMESPACE}_traces".traces (
       id UUID PRIMARY KEY,
