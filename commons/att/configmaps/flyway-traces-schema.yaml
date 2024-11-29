@@ -8,7 +8,7 @@ data:
     CREATE SCHEMA IF NOT EXISTS ${NAMESPACE}_traces;
 
     GRANT USAGE ON SCHEMA ${NAMESPACE}_traces to 
-      tracing_enriched_data_handler_user
+      tracing_enriched_data_handler_user,
       tracing_readonly_user;
 
     CREATE TABLE "${NAMESPACE}_traces".traces (
