@@ -1,0 +1,23 @@
+images:
+  microservices:
+    api:
+      tag: "1.0.0-RC1"
+    operations:
+      tag: "1.0.0-RC1"
+    processing:
+      tag: "1.0.0-RC1"
+    enriched-data-handler:
+      tag: "1.0.0-RC1"
+    state-updater:
+      tag: "1.0.0-RC1"
+    eservice-event-consumer:
+      tag: "1.0.0-RC1"
+    purpose-event-consumer:
+      tag: "1.0.0-RC1"
+    tenant-event-consumer:
+      tag: "1.0.0-RC1"
+  jobs:
+    missing-data-checker:
+      tag: "1.0.0-RC1"
+    cleanup:
+      tag: "1.0.0-RC1"
