@@ -34,3 +34,10 @@ data:
     
     GRANT SELECT, INSERT, DELETE ON TABLE "${NAMESPACE}_traces".traces TO tracing_enriched_data_handler_user;
     GRANT SELECT ON TABLE  "${NAMESPACE}_traces".traces TO tracing_readonly_user;
+
+  V1.0.1__Traces_Schema.sql: |-
+    ALTER TABLE "${NAMESPACE}_traces".traces
+      ALTER COLUMN created_at TYPE,
+      ALTER COLUMN consumer_external_id TYPE VARCHAR(255),
+      ALTER COLUMN producer_external_id TYPE VARCHAR(255);TIMESTAMPTZ;
+
