@@ -20,3 +20,6 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+# Ignore JSON microservices list
+terraform/k8s-monitoring/assets/microservices-list.json
