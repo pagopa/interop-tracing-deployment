@@ -119,3 +119,10 @@ jobs:
           ecs_cluster_name: ${{ secrets.ECS_CLUSTER_NAME }}
           pat_token: ${{ secrets.BOT_TOKEN }}
           environment: ${{ inputs.environment }}
+
+  tf_apply:
+    secrets: inherit
+    uses: ./.github/workflows/tf-apply.yaml
+    with:
+      environment: ${{ inputs.environment }}
+      timeout_seconds: 180
