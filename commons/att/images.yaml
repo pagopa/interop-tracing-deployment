@@ -19,5 +19,5 @@ images:
   jobs:
     missing-data-checker:
       tag: "1.0.0-RC1"
-    cleanup:
+    clean-up:
       tag: "1.0.0-RC1"
