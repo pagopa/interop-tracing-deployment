@@ -6,6 +6,14 @@ data "local_file" "microservices_list" {
   filename = "${path.module}/assets/microservices-list.json"
 }
 
+data "external" "cloudwatch_log_metric_filters" {
+  program = ["bash", "${path.module}/assets/scripts/get_cloudwatch_log_metric_filters.sh"]
+
+  query = {
+    log_group_name = var.cloudwatch_log_group_name
+  }
+}
+
 locals {
   microservices_names = jsondecode(data.local_file.microservices_list.content)
 }
@@ -32,6 +40,6 @@ module "k8s_deployment_monitoring" {
 
   create_dashboard = true
 
-  cloudwatch_app_logs_errors_metric_name      = contains(local.microservices_names, each.key) ? "ErrorCount" : null                #TOCHECK
-  cloudwatch_app_logs_errors_metric_namespace = contains(local.microservices_names, each.key) ? "EKSApplicationLogsFilters" : null #TOCHECK
+  cloudwatch_app_logs_errors_metric_name      = data.external.cloudwatch_log_metric_filters.result.metricName
+  cloudwatch_app_logs_errors_metric_namespace = data.external.cloudwatch_log_metric_filters.result.metricNamespace
 }

@@ -125,4 +125,5 @@ jobs:
     uses: ./.github/workflows/tf-apply.yaml
     with:
       environment: ${{ inputs.environment }}
-      timeout_seconds: 180
+      timeout_seconds: 300
+      
