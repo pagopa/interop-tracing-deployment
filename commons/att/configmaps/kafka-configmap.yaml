@@ -9,3 +9,4 @@ data:
   ESERVICE_TOPIC: "outbound.att_catalog.events"
   PURPOSE_TOPIC: "outbound.att_purpose.events"
   TENANT_TOPIC: "outbound.att_tenant.events"
+  DELEGATION_TOPIC: "outbound.att_delegation.events"
