@@ -6,7 +6,6 @@ tags = {
   Environment = "dev"
   Owner       = "PagoPA"
   Source      = "https://github.com/pagopa/interop-tracing-deployment-test"
-  Test        = "retagging"
 }
 
 eks_cluster_name = "tracing-eks-cluster-dev"
