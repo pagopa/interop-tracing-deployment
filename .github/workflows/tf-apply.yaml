@@ -49,8 +49,9 @@ jobs:
 
     steps:    
       - name: Create microservices JSON
+        working-directory: terraform/
         run: |
-          echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > terraform/k8s-monitoring/assets/microservices-list.json  
+          echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > /k8s-monitoring/assets/microservices-list.json  
 
       - name: Checkout
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
