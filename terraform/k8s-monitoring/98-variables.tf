@@ -15,11 +15,6 @@ variable "tags" {
   }
 }
 
-variable "sso_admin_role_name" {
-  type        = string
-  description = "Name of the existing SSO admin role"
-}
-
 variable "eks_cluster_name" {
   type        = string
   description = "Name of the tracing EKS cluster"
