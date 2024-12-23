@@ -52,9 +52,8 @@ jobs:
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
 
       - name: Create microservices JSON
-        working-directory: terraform/
         run: |
-          echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > /k8s-monitoring/assets/microservices-list.json  
+          echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > terraform/k8s-monitoring/assets/microservices-list.json
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
