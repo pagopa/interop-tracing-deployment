@@ -76,7 +76,7 @@ jobs:
         id: norm_env
         run: |
           GH_ENV="${{ inputs.environment }}"
-          NORM_ENV="$(echo "$GH_ENV" | sed -e 's/_ro//')"
+          NORM_ENV="$(echo "$GH_ENV" | sed -e 's/-tf//')"
           echo "NORM_ENV=$NORM_ENV" >> $GITHUB_ENV
 
       - name: Terraform Init
