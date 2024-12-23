@@ -26,8 +26,6 @@ jobs:
     name: Setup steps
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
-    env:
-      TARGET_ENVIRONMENT: ${{ inputs.environment }}
     outputs:
       microservices: ${{ steps.set-outputs.outputs.microservices }}
       cronjobs: ${{ steps.set-outputs.outputs.cronjobs }}
@@ -35,12 +33,14 @@ jobs:
       - name: Checkout
         id: checkout
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29
+
       - name: Normalize environment
         id: norm_env
         run: |
           GH_ENV="${{ inputs.environment }}"
           NORM_ENV="$(echo "$GH_ENV" | sed -e 's/-tf//')"
           echo "NORM_ENV=$NORM_ENV" >> $GITHUB_ENV
+
       - id: set-outputs
         run: |
           echo "microservices=$(find microservices -type f -path "*/$NORM_ENV/values.yaml" -exec dirname {} \; | awk -F'/' '{print $2}' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
@@ -58,8 +58,9 @@ jobs:
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
 
       - name: Create microservices JSON
+        working-directory: terraform/
         run: |
-          echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > terraform/k8s-monitoring/assets/microservices-list.json
+          echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > k8s-monitoring/assets/microservices-list.json
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
