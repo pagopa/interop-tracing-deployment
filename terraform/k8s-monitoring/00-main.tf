@@ -23,8 +23,8 @@ locals { #TOREMOVE
   project = "tracing"
 }
 
-data "aws_iam_role" "sso_admin" { #TOREMOVE
+data "aws_iam_role" "sso_admin" {
   name = var.sso_admin_role_name
 }
 
-data "aws_caller_identity" "current" {} #TOREMOVE
+data "aws_caller_identity" "current" {}

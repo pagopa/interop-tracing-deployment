@@ -44,6 +44,7 @@ jobs:
     name: Terraform Apply Monitoring Microservices
     needs: workflow_setup 
     runs-on: ubuntu-latest
+    timeout-minutes: 3
     environment: ${{ inputs.environment }}
 
     steps:    
@@ -88,4 +89,4 @@ jobs:
         id: terraform_apply_monitoring_microservice
         working-directory: terraform/k8s-monitoring
         run: |
-          terraform apply -var-file="./env/dev/terraform.tfvars" -auto-approve -lock-timeout=120s
+          terraform apply -var-file="./env/dev/terraform.tfvars" -auto-approve

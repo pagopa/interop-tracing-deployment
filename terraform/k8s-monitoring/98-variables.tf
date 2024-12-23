@@ -15,7 +15,7 @@ variable "tags" {
   }
 }
 
-variable "sso_admin_role_name" { #TOREMOVE
+variable "sso_admin_role_name" {
   type        = string
   description = "Name of the existing SSO admin role"
 }

@@ -7,11 +7,8 @@ data "local_file" "microservices_list" {
 }
 
 data "external" "cloudwatch_log_metric_filters" {
-  program = ["bash", "${path.module}/assets/scripts/get_cloudwatch_log_metric_filters.sh"]
-
-  query = {
-    log_group_name = var.cloudwatch_log_group_name
-  }
+  #program = ["aws", "logs", "describe-metric-filters", "--log-group-name", "${var.cloudwatch_log_group_name}", "--output", "json"]
+  program = ["sh", "-c", "aws logs describe-metric-filters --log-group-name ${var.cloudwatch_log_group_name} --output json | jq '{metricName: .metricFilters[0].metricTransformations[0].metricName, metricNamespace: .metricFilters[0].metricTransformations[0].metricNamespace}'"]
 }
 
 locals {
@@ -29,7 +26,7 @@ module "k8s_deployment_monitoring" {
   k8s_deployment_name = each.key
   sns_topics_arns     = [data.aws_sns_topic.platform_alarms.arn]
 
-  create_pod_availability_alarm = true
+  create_pod_availability_alarm = false
   create_pod_readiness_alarm    = true
   create_performance_alarm      = true
   create_app_logs_errors_alarm  = true
@@ -40,6 +37,6 @@ module "k8s_deployment_monitoring" {
 
   create_dashboard = true
 
-  cloudwatch_app_logs_errors_metric_name      = data.external.cloudwatch_log_metric_filters.result.metricName
-  cloudwatch_app_logs_errors_metric_namespace = data.external.cloudwatch_log_metric_filters.result.metricNamespace
+  cloudwatch_app_logs_errors_metric_name      = try(data.external.cloudwatch_log_metric_filters.result.metricName, null)
+  cloudwatch_app_logs_errors_metric_namespace = try(data.external.cloudwatch_log_metric_filters.result.metricNamespace, null)
 }

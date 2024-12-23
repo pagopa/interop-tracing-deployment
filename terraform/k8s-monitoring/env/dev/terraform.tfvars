@@ -8,7 +8,7 @@ tags = {
   Source      = "https://github.com/pagopa/interop-tracing-deployment"
 }
 
-sso_admin_role_name = "AWSReservedSSO_FullAdmin_083263499c3f66e7" #TOREMOVE
+sso_admin_role_name = "AWSReservedSSO_FullAdmin_083263499c3f66e7"
 
 eks_cluster_name = "tracing-eks-cluster-dev"
 
