@@ -5,7 +5,8 @@ tags = {
   CreatedBy   = "Terraform"
   Environment = "dev"
   Owner       = "PagoPA"
-  Source      = "https://github.com/pagopa/interop-tracing-deploymenta"
+  Source      = "https://github.com/pagopa/interop-tracing-deployment"
+  Test        = "retagging"
 }
 
 eks_cluster_name = "tracing-eks-cluster-dev"
