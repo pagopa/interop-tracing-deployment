@@ -58,10 +58,10 @@ jobs:
         uses: actions/checkout@ac593985615ec2ede58e132d2e21d2b1cbd6127c
 
       - name: Create microservices JSON
-        working-directory: terraform/
+        working-directory: terraform/k8s-monitoring/
         run: |
-          mkdir -p k8s-monitoring/assets
-          echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > k8s-monitoring/assets/microservices-list.json
+          mkdir assets
+          echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > assets/microservices-list.json
 
       - name: Create cronjobs JSON
         working-directory: terraform/
