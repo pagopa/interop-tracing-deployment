@@ -60,6 +60,7 @@ jobs:
       - name: Create microservices JSON
         working-directory: terraform/
         run: |
+          mkdir -p k8s-monitoring/assets
           echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > k8s-monitoring/assets/microservices-list.json
 
       - name: Create cronjobs JSON
