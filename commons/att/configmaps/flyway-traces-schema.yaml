@@ -37,7 +37,7 @@ data:
 
   V1.0.1__Traces_Schema.sql: |-
     ALTER TABLE "${NAMESPACE}_traces".traces
-      ALTER COLUMN created_at TYPE,
+      ALTER COLUMN created_at TYPE TIMESTAMPTZ,
       ALTER COLUMN consumer_external_id TYPE VARCHAR(255),
-      ALTER COLUMN producer_external_id TYPE VARCHAR(255);TIMESTAMPTZ;
+      ALTER COLUMN producer_external_id TYPE VARCHAR(255);
 

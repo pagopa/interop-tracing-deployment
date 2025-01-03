@@ -18,6 +18,17 @@ permissions:
   contents: read
 
 jobs:
+  print_inputs:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Print Inputs
+        id: print_inputs
+        run: |
+          echo "- environment: \`${{ inputs.environment }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- ref: \`${{ github.ref }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- force_restart: \`${{ inputs.force_restart }}\`" >> $GITHUB_STEP_SUMMARY
+
   initChecks:
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
