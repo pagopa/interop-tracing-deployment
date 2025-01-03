@@ -46,8 +46,8 @@ jobs:
           echo "microservices=$(find microservices -type f -path "*/$NORM_ENV/values.yaml" -exec dirname {} \; | awk -F'/' '{print $2}' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
           echo "cronjobs=$(find jobs -type f -path "*/$NORM_ENV/values.yaml" -exec dirname {} \; | awk -F'/' '{print $2}' | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
 
-  terraform_apply_monitoring_microservices:
-    name: Terraform Apply Monitoring Microservices
+  terraform_apply_monitoring:
+    name: Terraform Apply Monitoring
     needs: workflow_setup 
     runs-on: ubuntu-latest
     timeout-minutes: 3
@@ -61,6 +61,11 @@ jobs:
         working-directory: terraform/
         run: |
           echo '${{ needs.workflow_setup.outputs.microservices }}' | jq -c 'sort' > k8s-monitoring/assets/microservices-list.json
+
+      - name: Create cronjobs JSON
+        working-directory: terraform/
+        run: |
+          echo '${{ needs.workflow_setup.outputs.cronjobs }}' | jq -c 'sort' > k8s-monitoring/assets/cronjobs-list.json
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@67fbcbb121271f7775d2e7715933280b06314838
@@ -92,8 +97,8 @@ jobs:
         run: |
           ./terraform.sh init "$NORM_ENV"
 
-      - name: Terraform Apply Monitoring Microservices
-        id: terraform_apply_monitoring_microservice
+      - name: Terraform Apply Monitoring
+        id: terraform_apply_monitoring
         working-directory: terraform/k8s-monitoring
         run: |
-          terraform apply -var-file="./env/dev/terraform.tfvars" -auto-approve
+          terraform apply -var-file="./env/$NORM_ENV/terraform.tfvars" -auto-approve

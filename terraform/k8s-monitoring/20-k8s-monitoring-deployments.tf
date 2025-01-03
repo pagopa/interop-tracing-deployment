@@ -1,14 +1,5 @@
-data "aws_sns_topic" "platform_alarms" {
-  name = var.sns_topic_name
-}
-
 data "local_file" "microservices_list" {
   filename = "${path.module}/assets/microservices-list.json"
-}
-
-data "external" "cloudwatch_log_metric_filters" {
-  #program = ["aws", "logs", "describe-metric-filters", "--log-group-name", "${var.cloudwatch_log_group_name}", "--output", "json"]
-  program = ["sh", "-c", "aws logs describe-metric-filters --log-group-name ${var.cloudwatch_log_group_name} --output json | jq '{metricName: .metricFilters[0].metricTransformations[0].metricName, metricNamespace: .metricFilters[0].metricTransformations[0].metricNamespace}'"]
 }
 
 locals {
