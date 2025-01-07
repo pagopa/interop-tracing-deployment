@@ -88,7 +88,7 @@ jobs:
   create_runner:
     name: Create Self-Hosted Runner
     runs-on: ubuntu-22.04
-    if: ${{ inputs.run_k8s_workflow == true }}
+    if: ${{ inputs.run_k8s_workflow }}
     environment: ${{ inputs.environment }}
     needs: [ initChecks ]
     outputs:
@@ -97,7 +97,6 @@ jobs:
       matrix:
         index: [1,2,3,4,5,6,7,8,9,10]
       fail-fast: false
-    if: ${{ inputs.run_k8s_workflow == true }}
     steps:
       - name: Start GitHub Runner
         id: start_runner
@@ -119,7 +118,7 @@ jobs:
   deploy:
     needs: [ create_runner ]
     secrets: inherit
-    if: ${{ inputs.run_k8s_workflow == true }}
+    if: ${{ inputs.run_k8s_workflow }}
     uses: ./.github/workflows/k8s-apply-sub.yaml
     with:
       environment: ${{ inputs.environment }}
@@ -128,7 +127,7 @@ jobs:
   delete_runner:
     name: Delete Self-Hosted Runner
     needs: [create_runner, deploy]
-    if: ${{ always() && inputs.run_k8s_workflow == true }}
+    if: ${{ always() && inputs.run_k8s_workflow }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     strategy:
@@ -148,7 +147,7 @@ jobs:
 
   tf_apply:
     secrets: inherit
-    if: ${{ inputs.run_tf_workflow == true }}
+    if: ${{ inputs.run_tf_workflow }}
     uses: ./.github/workflows/tf-apply.yaml
     with:
       environment: ${{ inputs.environment }}
