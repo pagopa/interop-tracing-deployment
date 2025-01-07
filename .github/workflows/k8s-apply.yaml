@@ -12,6 +12,16 @@ on:
         required: true
         default: false
         type: boolean
+      run_k8s_workflow:
+        description: 'If true, run the k8s deployment jobs'
+        required: true
+        default: false
+        type: boolean
+      run_tf_workflow:
+        description: 'If true, run the TF apply job'
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   id-token: write
@@ -28,10 +38,13 @@ jobs:
           echo "- environment: \`${{ inputs.environment }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- ref: \`${{ github.ref }}\`" >> $GITHUB_STEP_SUMMARY
           echo "- force_restart: \`${{ inputs.force_restart }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- run_k8s_workflow: \`${{ inputs.run_k8s_workflow }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "- run_tf_workflow: \`${{ inputs.run_tf_workflow }}\`" >> $GITHUB_STEP_SUMMARY
 
   initChecks:
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
+    if: ${{ inputs.run_k8s_workflow == true }}
     steps:
       - name: Check user is a ${{ vars.ALLOWED_DEPLOY_GH_TEAMS }} team member
         id: checkUserPermissions
@@ -84,6 +97,7 @@ jobs:
       matrix:
         index: [1,2,3,4,5,6,7,8,9,10]
       fail-fast: false
+    if: ${{ inputs.run_k8s_workflow == true }}
     steps:
       - name: Start GitHub Runner
         id: start_runner
@@ -105,6 +119,7 @@ jobs:
   deploy:
     needs: [ create_runner ]
     secrets: inherit
+    if: ${{ inputs.run_k8s_workflow == true }}
     uses: ./.github/workflows/k8s-apply-sub.yaml
     with:
       environment: ${{ inputs.environment }}
@@ -113,7 +128,8 @@ jobs:
   delete_runner:
     name: Delete Self-Hosted Runner
     needs: [create_runner, deploy]
-    if: ${{ always() }}
+    #if: ${{ always() }}
+    if: ${{ inputs.run_k8s_workflow == true }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     strategy:
@@ -133,6 +149,7 @@ jobs:
 
   tf_apply:
     secrets: inherit
+    if: ${{ inputs.run_tf_workflow == true }}
     uses: ./.github/workflows/tf-apply.yaml
     with:
       environment: ${{ inputs.environment }}
