@@ -146,6 +146,7 @@ jobs:
           environment: ${{ inputs.environment }}
 
   tf_apply:
+    needs: [ initChecks ]
     secrets: inherit
     if: ${{ inputs.run_tf_workflow }}
     uses: ./.github/workflows/tf-apply.yaml
