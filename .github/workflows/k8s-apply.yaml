@@ -18,7 +18,7 @@ on:
         default: true
         type: boolean
       run_tf_workflow:
-        description: 'Run TF apply job'
+        description: 'Run TF workflow'
         required: true
         default: true
         type: boolean
