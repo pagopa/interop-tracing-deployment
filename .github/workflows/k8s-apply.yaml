@@ -128,7 +128,6 @@ jobs:
   delete_runner:
     name: Delete Self-Hosted Runner
     needs: [create_runner, deploy]
-    #if: ${{ always() }}
     if: ${{ inputs.run_k8s_workflow == true }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
