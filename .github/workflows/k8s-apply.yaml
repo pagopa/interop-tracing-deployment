@@ -44,7 +44,6 @@ jobs:
   initChecks:
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
-    if: ${{ inputs.run_k8s_workflow == true }}
     steps:
       - name: Check user is a ${{ vars.ALLOWED_DEPLOY_GH_TEAMS }} team member
         id: checkUserPermissions
@@ -128,7 +127,7 @@ jobs:
   delete_runner:
     name: Delete Self-Hosted Runner
     needs: [create_runner, deploy]
-    if: ${{ inputs.run_k8s_workflow == true }}
+    if: ${{ always() && inputs.run_k8s_workflow == true }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     strategy:
