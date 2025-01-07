@@ -60,3 +60,11 @@ data:
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (tracing_id) REFERENCES "${NAMESPACE}_tracing".tracings(id)
     );
+
+  V1.1__Delegation.sql: |-
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".delegations (
+    id UUID PRIMARY KEY,
+    delegate_id UUID NOT NULL,
+    eservice_id UUID NOT NULL,
+    state VARCHAR(255) NOT NULL
+  );

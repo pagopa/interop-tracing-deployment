@@ -108,3 +108,11 @@ data:
   V1.0.2__Tracing_Schema.sql: |-
     GRANT DELETE ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
       tracing_operations_user;
+
+  V1.1__Delegation.sql: |-
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".delegations (
+    id UUID PRIMARY KEY,
+    delegate_id UUID NOT NULL,
+    eservice_id UUID NOT NULL,
+    state VARCHAR(255) NOT NULL
+  );
