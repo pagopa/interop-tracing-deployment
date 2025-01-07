@@ -13,16 +13,6 @@ on:
         default: false
         type: boolean
       run_k8s_workflow:
-<<<<<<< HEAD
-        description: 'Run k8s deployment jobs'
-        required: true
-        default: false
-        type: boolean
-      run_tf_workflow:
-        description: 'Run TF apply job'
-        required: true
-        default: false
-=======
         description: 'Run K8s workflow'
         required: true
         default: true
@@ -31,7 +21,6 @@ on:
         description: 'Run TF workflow'
         required: true
         default: true
->>>>>>> main
         type: boolean
 
 permissions:
@@ -130,11 +119,7 @@ jobs:
   deploy:
     needs: [ create_runner ]
     secrets: inherit
-<<<<<<< HEAD
-    if: ${{ inputs.run_k8s_workflow == true }}
-=======
     if: ${{ inputs.run_k8s_workflow }}
->>>>>>> main
     uses: ./.github/workflows/k8s-apply-sub.yaml
     with:
       environment: ${{ inputs.environment }}
@@ -143,11 +128,7 @@ jobs:
   delete_runner:
     name: Delete Self-Hosted Runner
     needs: [create_runner, deploy]
-<<<<<<< HEAD
-    if: ${{ always() && inputs.run_k8s_workflow == true }}
-=======
     if: ${{ always() && inputs.run_k8s_workflow }}
->>>>>>> main
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     strategy:
@@ -168,11 +149,7 @@ jobs:
   tf_apply:
     needs: [ initChecks ]
     secrets: inherit
-<<<<<<< HEAD
-    if: ${{ inputs.run_tf_workflow == true }}
-=======
     if: ${{ inputs.run_tf_workflow }}
->>>>>>> main
     uses: ./.github/workflows/tf-apply.yaml
     with:
       environment: ${{ inputs.environment }}

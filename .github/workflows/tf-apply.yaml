@@ -45,11 +45,8 @@ jobs:
 
       - id: set-outputs
         run: |
-<<<<<<< HEAD
-=======
           set -euo pipefail
 
->>>>>>> main
           echo "microservices=$(find microservices -type f -path "*/$NORM_ENV/values.yaml" -exec yq '.name' {} \; | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
           echo "cronjobs=$(find jobs -type f -path "*/$NORM_ENV/values.yaml" -exec yq '.name' {} \; | jq -R -s -c 'split("\n")[:-1]')" >> "$GITHUB_OUTPUT"
 
