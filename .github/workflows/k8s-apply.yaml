@@ -13,12 +13,12 @@ on:
         default: false
         type: boolean
       run_k8s_workflow:
-        description: 'If true, run the k8s deployment jobs'
+        description: 'Run k8s deployment jobs'
         required: true
         default: false
         type: boolean
       run_tf_workflow:
-        description: 'If true, run the TF apply job'
+        description: 'Run TF apply job'
         required: true
         default: false
         type: boolean
