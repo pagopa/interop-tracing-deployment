@@ -88,6 +88,7 @@ jobs:
   create_runner:
     name: Create Self-Hosted Runner
     runs-on: ubuntu-22.04
+    if: ${{ inputs.run_k8s_workflow == true }}
     environment: ${{ inputs.environment }}
     needs: [ initChecks ]
     outputs:
@@ -152,4 +153,3 @@ jobs:
     with:
       environment: ${{ inputs.environment }}
       timeout_seconds: 300
-      
