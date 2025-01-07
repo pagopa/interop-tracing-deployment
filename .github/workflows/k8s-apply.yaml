@@ -97,7 +97,6 @@ jobs:
       matrix:
         index: [1,2,3,4,5,6,7,8,9,10]
       fail-fast: false
-    if: ${{ inputs.run_k8s_workflow == true }}
     steps:
       - name: Start GitHub Runner
         id: start_runner
