@@ -96,7 +96,7 @@ jobs:
   create_runner:
     name: Create Self-Hosted Runner
     runs-on: ubuntu-22.04
-    if: ${{ inputs.run_k8s_workflow }}
+    if: ${{ inputs.run_k8s_workflow || inputs.run_tf_apply_secrets_workflow }}
     environment: ${{ inputs.environment }}
     needs: [ initChecks ]
     outputs:
@@ -135,7 +135,7 @@ jobs:
   delete_runner:
     name: Delete Self-Hosted Runner
     needs: [create_runner, deploy, tf_apply_secrets]
-    if: ${{ always() && inputs.run_k8s_workflow }}
+    if: ${{ always() && (inputs.run_k8s_workflow || inputs.run_tf_apply_secrets_workflow) }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     strategy:
