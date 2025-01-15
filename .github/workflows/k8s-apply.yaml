@@ -132,6 +132,15 @@ jobs:
       environment: ${{ inputs.environment }}
       timeout_seconds: 180
 
+  tf_apply_secrets:
+    needs: [initChecks, create_runner]
+    secrets: inherit
+    if: ${{ inputs.run_tf_apply_secrets_workflow }}
+    uses: ./.github/workflows/tf-apply-secrets.yaml
+    with:
+      environment: ${{ inputs.environment }}
+      timeout_seconds: 300
+      
   delete_runner:
     name: Delete Self-Hosted Runner
     needs: [create_runner, deploy, tf_apply_secrets]
@@ -158,15 +167,6 @@ jobs:
     secrets: inherit
     if: ${{ inputs.run_tf_apply_monitoring_workflow }}
     uses: ./.github/workflows/tf-apply-monitoring.yaml
-    with:
-      environment: ${{ inputs.environment }}
-      timeout_seconds: 300
-
-  tf_apply_secrets:
-    needs: [initChecks, create_runner]
-    secrets: inherit
-    if: ${{ inputs.run_tf_apply_secrets_workflow }}
-    uses: ./.github/workflows/tf-apply-secrets.yaml
     with:
       environment: ${{ inputs.environment }}
       timeout_seconds: 300
