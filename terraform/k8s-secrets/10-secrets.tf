@@ -21,12 +21,6 @@ data "aws_secretsmanager_secret_version" "tracing_store_users" {
   secret_id = each.value.name
 }
 
-data "kubernetes_namespace_v1" "env" {
-  metadata {
-    name = var.env
-  }
-}
-
 locals {
   sv_namespaces_pairs = flatten([
     for sv_key, sv_value in data.aws_secretsmanager_secret_version.tracing_store_users : [
@@ -40,7 +34,7 @@ locals {
 }
 
 resource "kubernetes_secret_v1" "tracing_store_users" {
-  for_each = { for elem in local.sv_namespaces_pairs : "${elem.eks_replica_secret_name}/${elem.namespace}" => elem }
+  for_each = { for elem in local.sv_namespaces_pairs : "${elem.namespace}/${elem.eks_replica_secret_name}" => elem }
 
   metadata {
     namespace = each.value.namespace
