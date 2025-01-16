@@ -11,12 +11,6 @@ on:
         description: 'Kubectl apply wait timeout in seconds for Deployments'
         required: true
         type: number
-    secrets:
-      AWS_REGION:
-        required: true
-      EKS_CLUSTER_NAME:
-        required: true
-
   
 defaults:
   run:
