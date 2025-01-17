@@ -33,16 +33,30 @@ locals {
   ])
 }
 
+resource "time_static" "secret_string_update" {
+  for_each = data.aws_secretsmanager_secret_version.tracing_store_users
+
+  triggers = {
+    secret_string = each.value.secret_string
+  }
+}
+
 resource "kubernetes_secret_v1" "tracing_store_users" {
+  depends_on = [time_static.secret_string_update]
+
   for_each = { for elem in local.sv_namespaces_pairs : "${elem.namespace}/${elem.eks_replica_secret_name}" => elem }
 
   metadata {
     namespace = each.value.namespace
     name      = each.value.eks_replica_secret_name
+    annotations = {
+      "infra.interop.pagopa.it/aws-secretsmanager-secret-id" : each.value.secret_version.secret_id,
+      "infra.interop.pagopa.it/aws-secretsmanager-version-id" : each.value.secret_version.version_id,
+      "infra.interop.pagopa.it/updated-at" : time_static.secret_string_update[each.value.secret_version.secret_id].rfc3339
+    }
   }
 
   data = {
-    username = jsondecode(each.value.secret_version.secret_string).username
-    password = jsondecode(each.value.secret_version.secret_string).password
+    for key, value in jsondecode(each.value.secret_version.secret_string) : key => value
   }
 }
