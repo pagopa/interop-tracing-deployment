@@ -61,7 +61,6 @@ jobs:
             USER: ${{ github.triggering_actor	}}
         run: |
           set -euo pipefail
-
           TEAMS_LIST=$(echo $TEAMS | tr "," "\n")
 
           CHECK_SUCCESS=0
