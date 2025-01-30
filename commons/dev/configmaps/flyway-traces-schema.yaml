@@ -27,3 +27,7 @@ data:
       producer_external_id UUID,
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
+
+  V1.1.0__Token_UUID.sql: |-
+    ALTER TABLE "${NAMESPACE}_traces".traces
+      ADD COLUMN token UUID;
