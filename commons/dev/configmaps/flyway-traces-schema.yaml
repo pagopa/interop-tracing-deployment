@@ -28,6 +28,6 @@ data:
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
-  V1.0.1__Traces_Schema.sql: |-
+  V1.1.0__Token_UUID.sql: |-
     ALTER TABLE "${NAMESPACE}_traces".traces
       ADD COLUMN token UUID;
