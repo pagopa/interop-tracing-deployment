@@ -1,0 +1,36 @@
+name: "tracing-be-api"
+
+serviceAccount:
+  roleArn: "arn:aws:iam::537124933279:role/tracing-be-api-qa"
+
+service:
+  create: true
+  portName: http
+  containerPort: 8080
+  targetGroupArn: "arn:aws:elasticloadbalancing:eu-south-1:537124933279:targetgroup/qa-tracing-api/e0036be6cda6ed26"
+
+configmap:
+  ACCEPTED_AUDIENCES: "qa.interop.pagopa.it/m2m"
+  APPLICATION_NAME: "tracing-api"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.qa:8080"
+  S3_BUCKET_NAME: "tracing-files-dev"
+  STORAGE_PATH_NAME: "/tmp"
+
+deployment:
+  env:
+    HOST: "0.0.0.0"
+    PORT: 8080
+  envFromConfigmaps:
+    WELL_KNOWN_URLS: "common-jwt.WELL_KNOWN_URLS"
+  livenessProbe:
+    httpGet:
+      path: "/status"
+      port: http
+    periodSeconds: 5
+    initialDelaySeconds: 15
+  readinessProbe:
+    httpGet:
+      path: "/status"
+      port: http
+    periodSeconds: 5
+    initialDelaySeconds: 15

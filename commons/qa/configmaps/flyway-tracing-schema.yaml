@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-flyway-tracing-schema
+  namespace: qa
+data:
+  V1__Tracing_Schema.sql: |-
+    CREATE SCHEMA IF NOT EXISTS "${NAMESPACE}_tracing";
+
+    GRANT USAGE ON SCHEMA ${NAMESPACE}_tracing TO
+      tracing_operations_user,
+      tracing_processing_user,
+      tracing_enriched_data_handler_user,
+      tracing_readonly_user;
+
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".tenants (
+      id UUID PRIMARY KEY,
+      name VARCHAR(255),
+      origin VARCHAR(255),
+      external_id VARCHAR(255),
+      deleted BOOLEAN NOT NULL
+    );
+
+    GRANT SELECT, INSERT, DELETE ON TABLE "${NAMESPACE}_tracing".tenants TO
+      tracing_operations_user;
+
+    GRANT SELECT ON "${NAMESPACE}_tracing".tenants TO
+      tracing_processing_user,
+      tracing_readonly_user;
+
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".eservices (
+      eservice_id UUID PRIMARY KEY,
+      producer_id UUID NOT NULL,
+      name VARCHAR(2048) NOT NULL
+    );
+
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".eservices TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".eservices TO
+      tracing_processing_user,
+      tracing_readonly_user;
+
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".purposes (
+      id UUID PRIMARY KEY,
+      consumer_id UUID NOT NULL,
+      eservice_id UUID NOT NULL,
+      purpose_title VARCHAR(2048) NOT NULL
+    );
+
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".purposes TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".purposes TO
+      tracing_processing_user,
+      tracing_readonly_user;
+
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".tracings (
+      id UUID PRIMARY KEY,
+      tenant_id UUID NOT NULL,
+      state VARCHAR(255) NOT NULL CHECK (
+          state IN ('PENDING', 'COMPLETED', 'MISSING', 'ERROR')
+      ),
+      date TIMESTAMP NOT NULL,
+      version INT NOT NULL,
+      errors BOOLEAN NOT NULL DEFAULT false,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
+    GRANT SELECT, INSERT, UPDATE ON TABLE "${NAMESPACE}_tracing".tracings TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".tracings TO
+      tracing_processing_user,
+      tracing_readonly_user;
+
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".purposes_errors (
+      id UUID PRIMARY KEY,
+      tracing_id UUID NOT NULL,
+      version INT NOT NULL,
+      purpose_id VARCHAR(255) NOT NULL,
+      error_code VARCHAR(255) NOT NULL,
+      message VARCHAR(2048) NOT NULL,
+      row_number INT NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+
+    GRANT SELECT, INSERT, UPDATE ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
+      tracing_readonly_user;
+
+  V1.0.1__Tracing_Schema.sql: |-
+    ALTER TABLE "${NAMESPACE}_tracing".tenants
+      ALTER COLUMN name DROP NOT NULL,
+      ALTER COLUMN origin DROP NOT NULL,
+      ALTER COLUMN external_id DROP NOT NULL;
+
+    ALTER TABLE "${NAMESPACE}_tracing".tracings
+      ALTER COLUMN created_at TYPE TIMESTAMPTZ,
+      ALTER COLUMN updated_at TYPE TIMESTAMPTZ;
+
+    ALTER TABLE "${NAMESPACE}_tracing".purposes_errors
+      ALTER COLUMN created_at TYPE TIMESTAMPTZ;
+
+  V1.0.2__Tracing_Schema.sql: |-
+    GRANT DELETE ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
+      tracing_operations_user;
+
+  V1.1__Delegation.sql: |-
+    CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".delegations (
+      id UUID PRIMARY KEY,
+      delegate_id UUID NOT NULL,
+      eservice_id UUID NOT NULL,
+        state VARCHAR(255) NOT NULL
+    );

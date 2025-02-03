@@ -1,0 +1,25 @@
+images:
+  microservices:
+    api:
+      tag: "develop"
+    operations:
+      tag: "develop"
+    processing:
+      tag: "develop"
+    enriched-data-handler:
+      tag: "develop"
+    state-updater:
+      tag: "develop"
+    eservice-event-consumer:
+      tag: "develop"
+    purpose-event-consumer:
+      tag: "develop"
+    tenant-event-consumer:
+      tag: "develop"
+    delegation-event-consumer:
+      tag: "develop"
+  jobs:
+    missing-data-checker:
+      tag: "develop"
+    clean-up:
+      tag: "develop"

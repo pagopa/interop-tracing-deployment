@@ -1,0 +1,11 @@
+name: "tracing-be-clean-up"
+
+configmap:
+  APPLICATION_NAME: "tracing-clean-up"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.qa:8080"
+
+cronjob:
+  schedule: "50 23 * * *"
+  timeZone: "Europe/Rome"
+  concurrencyPolicy: "Forbid"
+  activeDeadlineSeconds: 3600
