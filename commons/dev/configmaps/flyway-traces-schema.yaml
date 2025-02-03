@@ -31,3 +31,7 @@ data:
   V1.1.0__Token_UUID.sql: |-
     ALTER TABLE "${NAMESPACE}_traces".traces
       ADD COLUMN token UUID;
+
+  V1.1.1__Token_UUID_Rename.sql: |-
+    ALTER TABLE "${NAMESPACE}_traces".traces
+      RENAME COLUMN token TO token_id;
