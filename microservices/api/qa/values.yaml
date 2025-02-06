@@ -13,7 +13,7 @@ configmap:
   ACCEPTED_AUDIENCES: "qa.interop.pagopa.it/m2m"
   APPLICATION_NAME: "tracing-api"
   API_OPERATIONS_BASEURL: "http://tracing-be-operations.qa:8080"
-  S3_BUCKET_NAME: "tracing-files-dev"
+  S3_BUCKET_NAME: "tracing-files-qa"
   STORAGE_PATH_NAME: "/tmp"
 
 deployment:
