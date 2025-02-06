@@ -9,7 +9,7 @@ service:
 configmap:
   DB_SCHEMA_NAME: "qa_tracing"
   APPLICATION_NAME: "tracing-processing"
-  SQS_TRACING_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/537124933279/tracing-enriched-upload-qa"
+  SQS_TRACING_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/537124933279/tracing-upload-qa"
   SQS_PROCESSING_ERROR_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/537124933279/tracing-processing-error-qa"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"
   S3_BUCKET_NAME: "tracing-files-qa"
