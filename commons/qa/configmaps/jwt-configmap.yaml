@@ -4,4 +4,4 @@ metadata:
   name: common-jwt
   namespace: qa
 data:
-  WELL_KNOWN_URLS: "https://qa.interop.pagopa.it/.well-known/jwks.json"
+  WELL_KNOWN_URLS: "https://qa.interop.pagopa.it/.well-known/jwks.json,https://tracing-qa-only-well-known-qa.s3.eu-south-1.amazonaws.com/.well-known/jwks.json"
