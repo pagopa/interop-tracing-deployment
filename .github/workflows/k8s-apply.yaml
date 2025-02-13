@@ -120,16 +120,7 @@ jobs:
           ecs_task_max_duration_seconds: ${{ vars.ECS_TASK_MAX_DURATION_SECONDS }}
           pat_token: ${{ secrets.BOT_TOKEN }}
           environment: ${{ inputs.environment }}
-
-  deploy:
-    needs: [ create_runner ]
-    secrets: inherit
-    if: ${{ inputs.run_k8s_workflow }}
-    uses: ./.github/workflows/k8s-apply-sub.yaml
-    with:
-      environment: ${{ inputs.environment }}
-      timeout_seconds: 180
-
+  
   tf_apply_secrets:
     needs: [initChecks, create_runner]
     secrets: inherit
@@ -139,9 +130,18 @@ jobs:
       environment: ${{ inputs.environment }}
       timeout_seconds: 300
 
+  deploy:
+    needs: [ create_runner, tf_apply_secrets ]
+    secrets: inherit
+    if: ${{ inputs.run_k8s_workflow }}
+    uses: ./.github/workflows/k8s-apply-sub.yaml
+    with:
+      environment: ${{ inputs.environment }}
+      timeout_seconds: 180
+
   delete_runner:
     name: Delete Self-Hosted Runner
-    needs: [create_runner, deploy, tf_apply_secrets]
+    needs: [create_runner, tf_apply_secrets, deploy]
     if: ${{ always() && (inputs.run_k8s_workflow || inputs.run_tf_apply_secrets_workflow) }}
     runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
