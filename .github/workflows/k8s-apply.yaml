@@ -121,7 +121,7 @@ jobs:
           pat_token: ${{ secrets.BOT_TOKEN }}
           environment: ${{ inputs.environment }}
 
-tf_apply_secrets:
+  tf_apply_secrets:
     needs: [ create_runner ]
     secrets: inherit
     if: ${{ inputs.run_tf_apply_secrets_workflow }}
