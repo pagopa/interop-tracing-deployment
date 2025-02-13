@@ -68,3 +68,9 @@ data:
       eservice_id UUID NOT NULL,
       state VARCHAR(255) NOT NULL
     );
+
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".delegations TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".delegations TO
+      tracing_readonly_user;
