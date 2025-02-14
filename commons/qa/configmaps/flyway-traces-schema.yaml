@@ -31,7 +31,7 @@ data:
       producer_external_id UUID,
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
-    
+
     GRANT SELECT, INSERT, DELETE ON TABLE "${NAMESPACE}_traces".traces TO tracing_enriched_data_handler_user;
     GRANT SELECT ON TABLE  "${NAMESPACE}_traces".traces TO tracing_readonly_user;
 
@@ -40,3 +40,7 @@ data:
       ALTER COLUMN created_at TYPE TIMESTAMPTZ,
       ALTER COLUMN consumer_external_id TYPE VARCHAR(255),
       ALTER COLUMN producer_external_id TYPE VARCHAR(255);
+
+  V1.0.2__Token_UUID.sql: |-
+    ALTER TABLE "${NAMESPACE}_traces".traces
+      ADD COLUMN token_id UUID;
