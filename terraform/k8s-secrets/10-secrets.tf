@@ -38,10 +38,6 @@ locals {
   ])
 }
 
-# output "sv_namespaces_pairs" {
-#   value = local.sv_namespaces_pairs
-# }
-
 resource "time_static" "secret_string_update" {
   for_each = data.aws_secretsmanager_secret_version.filtered
 
