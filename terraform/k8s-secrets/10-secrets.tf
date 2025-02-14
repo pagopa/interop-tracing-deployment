@@ -3,11 +3,6 @@ data "aws_secretsmanager_secrets" "tagged" {
     name   = "tag-key"
     values = ["EKSClusterName"]
   }
-
-  filter {
-    name   = "tag-key"
-    values = ["TerraformState"]
-  }
 }
 
 data "aws_secretsmanager_secret" "tagged_object" {
