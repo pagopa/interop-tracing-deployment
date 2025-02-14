@@ -133,7 +133,7 @@ jobs:
   deploy:
     needs: [ create_runner, tf_apply_secrets ]
     secrets: inherit
-    if: ${{ inputs.run_k8s_workflow && ((!inputs.run_tf_apply_secrets_workflow && needs.tf_apply_secrets.result == 'skipped') || inputs.run_tf_apply_secrets_workflow) }}
+    if: ${{ always() && (inputs.run_k8s_workflow && ((!inputs.run_tf_apply_secrets_workflow && needs.tf_apply_secrets.result == 'skipped') || inputs.run_tf_apply_secrets_workflow)) }}
     uses: ./.github/workflows/k8s-apply-sub.yaml
     with:
       environment: ${{ inputs.environment }}
