@@ -3,6 +3,11 @@ data "aws_secretsmanager_secrets" "tagged" {
     name   = "tag-key"
     values = ["EKSClusterName"]
   }
+
+  filter {
+    name   = "tag-key"
+    values = ["TerraformState"]
+  }
 }
 
 data "aws_secretsmanager_secret" "tagged_object" {
@@ -16,7 +21,7 @@ data "aws_secretsmanager_secret" "tagged_object" {
 data "aws_secretsmanager_secret_version" "filtered" {
   depends_on = [data.aws_secretsmanager_secret.tagged_object]
 
-  for_each = { for key, object in data.aws_secretsmanager_secret.tagged_object : key => object if object.tags["EKSClusterName"] == var.eks_cluster_name }
+  for_each = { for key, object in data.aws_secretsmanager_secret.tagged_object : key => object if(object.tags["EKSClusterName"] == var.eks_cluster_name && (contains(local.terraform_states_list, object.tags["TerraformState"]))) }
 
   secret_id = each.value.name
 }
@@ -32,6 +37,10 @@ locals {
     ]
   ])
 }
+
+# output "sv_namespaces_pairs" {
+#   value = local.sv_namespaces_pairs
+# }
 
 resource "time_static" "secret_string_update" {
   for_each = data.aws_secretsmanager_secret_version.filtered
