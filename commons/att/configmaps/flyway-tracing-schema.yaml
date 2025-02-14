@@ -121,4 +121,5 @@ data:
       tracing_operations_user;
 
     GRANT SELECT ON TABLE "${NAMESPACE}_tracing".delegations TO
+      tracing_processing_user,
       tracing_readonly_user;
