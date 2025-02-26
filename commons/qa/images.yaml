@@ -1,25 +1,25 @@
 images:
   microservices:
     api:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     operations:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     processing:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     enriched-data-handler:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     state-updater:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     eservice-event-consumer:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     purpose-event-consumer:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     tenant-event-consumer:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     delegation-event-consumer:
-      tag: "develop"
+      tag: "1.0.0-RC4"
   jobs:
     missing-data-checker:
-      tag: "develop"
+      tag: "1.0.0-RC4"
     clean-up:
-      tag: "develop"
+      tag: "1.0.0-RC4"

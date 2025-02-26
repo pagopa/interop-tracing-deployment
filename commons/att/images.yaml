@@ -1,25 +1,25 @@
 images:
   microservices:
     api:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     operations:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     processing:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     enriched-data-handler:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     state-updater:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     eservice-event-consumer:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     purpose-event-consumer:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     tenant-event-consumer:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     delegation-event-consumer:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
   jobs:
     missing-data-checker:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
     clean-up:
-      tag: "1.0.0-RC3"
+      tag: "1.0.0-RC4"
