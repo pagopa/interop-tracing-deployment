@@ -14,6 +14,7 @@ configmap:
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"
   S3_BUCKET_NAME: "tracing-files-dev"
   S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-dev"
+  BATCH_SIZE: 500
 
 deployment:
   flywayInitContainer:
@@ -32,8 +33,6 @@ deployment:
     envFromSecrets:
       FLYWAY_USER: "tracing-store-flyway-user.username"
       FLYWAY_PASSWORD: "tracing-store-flyway-user.password"
-  env:
-    BATCH_SIZE: 500
 
   envFromConfigmaps:
     DB_HOST: "common-tracing-store.DB_HOST_RO"
