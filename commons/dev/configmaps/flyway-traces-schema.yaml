@@ -2,12 +2,21 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: common-flyway-traces-schema
-  namespace: dev
+  namespace: dev #TOCHECK
 data:
   V1__Traces_Schema.sql: |-
-    CREATE SCHEMA IF NOT EXISTS ${NAMESPACE}_traces;
+    CREATE SCHEMA IF NOT EXISTS traces;
 
-    CREATE TABLE "${NAMESPACE}_traces".traces (
+    GRANT USAGE ON SCHEMA traces TO
+      tracing_be_enriched_data_handler_${NAMESPACE};
+
+    GRANT USAGE ON SCHEMA traces TO GROUP
+      readonly_group;
+
+    GRANT CREATE, ALTER, DROP ON SCHEMA traces TO 
+      tracing_be_enriched_data_handler_${NAMESPACE};
+
+    CREATE TABLE IF NOT EXISTS traces.traces (
       id UUID PRIMARY KEY,
       tracing_id UUID,
       submitter_id UUID,
@@ -28,10 +37,13 @@ data:
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE traces.traces TO
+      tracing_be_enriched_data_handler_${NAMESPACE};
+
   V1.1.0__Token_UUID.sql: |-
-    ALTER TABLE "${NAMESPACE}_traces".traces
+    ALTER TABLE traces.traces
       ADD COLUMN token UUID;
 
   V1.1.1__Token_UUID_Rename.sql: |-
-    ALTER TABLE "${NAMESPACE}_traces".traces
+    ALTER TABLE traces.traces
       RENAME COLUMN token TO token_id;
