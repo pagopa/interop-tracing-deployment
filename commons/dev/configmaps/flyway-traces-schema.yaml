@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: common-flyway-traces-schema
-  namespace: dev #TOCHECK
+  namespace: dev
 data:
   V1__Traces_Schema.sql: |-
     CREATE SCHEMA IF NOT EXISTS traces;
