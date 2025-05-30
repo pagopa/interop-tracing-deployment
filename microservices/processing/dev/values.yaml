@@ -39,6 +39,13 @@ deployment:
     DB_NAME: "common-tracing-store.DB_NAME"
     DB_PORT: "common-tracing-store.DB_PORT"
     DB_USE_SSL: "common-tracing-store.DB_USE_SSL"
+    REDSHIFT_HOST: "common-redshift.DB_HOST"
+    REDSHIFT_PORT: "common-redshift.DB_PORT"
+    REDSHIFT_USE_SSL: "common-redshift.DB_USE_SSL"
+    REDSHIFT_DB_NAME: "common-redshift.DB_NAME"
+    REDSHIFT_SCHEMA_NAME: "common-redshift.DB_DOMAINS_SCHEMA"
   envFromSecrets:
     DB_USERNAME: "tracing-store-processing-user.username"
     DB_PASSWORD: "tracing-store-processing-user.password"
+    REDSHIFT_USERNAME: "redshift-tracing-processing-user.username"
+    REDSHIFT_PASSWORD: "redshift-tracing-processing-user.password"
