@@ -10,6 +10,7 @@ data:
       tracing_operations_user,
       tracing_processing_user,
       tracing_enriched_data_handler_user;
+
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".tenants (
       id UUID PRIMARY KEY,
       name VARCHAR(255),
@@ -17,11 +18,13 @@ data:
       external_id VARCHAR(255),
       deleted BOOLEAN NOT NULL
     );
+
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".eservices (
       eservice_id UUID PRIMARY KEY,
       producer_id UUID NOT NULL,
       name VARCHAR(2048) NOT NULL
     );
+
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".purposes (
       id UUID PRIMARY KEY,
       consumer_id UUID NOT NULL,
@@ -30,6 +33,7 @@ data:
       FOREIGN KEY (consumer_id) REFERENCES "${NAMESPACE}_tracing".tenants(id),
       FOREIGN KEY (eservice_id) REFERENCES "${NAMESPACE}_tracing".eservices(eservice_id)
     );
+
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".tracings (
       id UUID PRIMARY KEY,
       tenant_id UUID NOT NULL,
@@ -43,6 +47,7 @@ data:
       updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (tenant_id) REFERENCES "${NAMESPACE}_tracing".tenants(id)
     );
+
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".purposes_errors (
       id UUID PRIMARY KEY,
       tracing_id UUID NOT NULL,
@@ -54,6 +59,7 @@ data:
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (tracing_id) REFERENCES "${NAMESPACE}_tracing".tracings(id)
     );
+
   V1.1__Delegation.sql: |-
     CREATE TABLE IF NOT EXISTS "${NAMESPACE}_tracing".delegations (
       id UUID PRIMARY KEY,
@@ -61,8 +67,10 @@ data:
       eservice_id UUID NOT NULL,
       state VARCHAR(255) NOT NULL
     );
+
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".delegations TO
       tracing_operations_user;
+    
     GRANT SELECT ON TABLE "${NAMESPACE}_tracing".delegations TO
       tracing_processing_user,
       tracing_readonly_user;
