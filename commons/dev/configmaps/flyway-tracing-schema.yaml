@@ -6,6 +6,7 @@ metadata:
 data:
   V1__Tracing_Schema.sql: |-
     CREATE SCHEMA IF NOT EXISTS ${NAMESPACE}_tracing;
+
     GRANT USAGE ON SCHEMA ${NAMESPACE}_tracing TO
       tracing_operations_user,
       tracing_processing_user,
@@ -70,7 +71,7 @@ data:
 
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".delegations TO
       tracing_operations_user;
-    
+
     GRANT SELECT ON TABLE "${NAMESPACE}_tracing".delegations TO
       tracing_processing_user,
       tracing_readonly_user;
