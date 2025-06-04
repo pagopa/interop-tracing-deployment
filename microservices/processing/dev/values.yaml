@@ -2,7 +2,7 @@ name: "tracing-be-processing"
 
 serviceAccount:
   roleArn: "arn:aws:iam::590183909663:role/tracing-be-processing-dev"
-  
+
 service:
   create: false
 
