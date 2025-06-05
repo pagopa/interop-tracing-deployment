@@ -1,22 +1,22 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: common-flyway-traces-schema
-  namespace: dev
+  name: common-flyway-redshift-tracing-schema
+  namespace: dev-analytics
 data:
-  V1__Traces_Schema.sql: |-
-    CREATE SCHEMA IF NOT EXISTS traces;
+  V1__Tracing_Schema.sql: |-
+    CREATE SCHEMA IF NOT EXISTS tracing;
 
-    GRANT USAGE ON SCHEMA traces TO
+    GRANT USAGE ON SCHEMA tracing TO
       tracing_be_enriched_data_handler_${NAMESPACE};
 
-    GRANT USAGE ON SCHEMA traces TO GROUP
+    GRANT USAGE ON SCHEMA tracing TO GROUP
       readonly_group;
 
-    GRANT CREATE, ALTER, DROP ON SCHEMA traces TO 
+    GRANT CREATE, ALTER, DROP ON SCHEMA tracing TO 
       tracing_be_enriched_data_handler_${NAMESPACE};
 
-    CREATE TABLE IF NOT EXISTS traces.traces (
+    CREATE TABLE IF NOT EXISTS tracing.traces (
       id UUID PRIMARY KEY,
       tracing_id UUID,
       submitter_id UUID,
@@ -37,13 +37,13 @@ data:
       created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     );
 
-    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE traces.traces TO
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE tracing.traces TO
       tracing_be_enriched_data_handler_${NAMESPACE};
 
   V1.1.0__Token_UUID.sql: |-
-    ALTER TABLE traces.traces
+    ALTER TABLE tracing.traces
       ADD COLUMN token UUID;
 
   V1.1.1__Token_UUID_Rename.sql: |-
-    ALTER TABLE traces.traces
+    ALTER TABLE tracing.traces
       RENAME COLUMN token TO token_id;
