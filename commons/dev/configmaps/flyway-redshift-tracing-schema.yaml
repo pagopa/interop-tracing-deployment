@@ -34,16 +34,9 @@ data:
       producer_name VARCHAR(255),
       producer_origin VARCHAR(255),
       producer_external_id UUID,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      token_id UUID
     );
 
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE tracing.traces TO
       tracing_be_enriched_data_handler_${NAMESPACE};
-
-  V1.1.0__Token_UUID.sql: |-
-    ALTER TABLE tracing.traces
-      ADD COLUMN token UUID;
-
-  V1.1.1__Token_UUID_Rename.sql: |-
-    ALTER TABLE tracing.traces
-      RENAME COLUMN token TO token_id;
