@@ -1,0 +1,21 @@
+name: "tracing-be-eservice-event-consumer"
+
+serviceAccount:
+  roleArn: "arn:aws:iam::637423185147:role/tracing-be-eservice-event-consumer-uat"
+
+service:
+  create: false
+
+configmap:
+  APPLICATION_NAME: "tracing-eservice-event-consumer"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.uat:8080" 
+  KAFKA_GROUP_ID: "tracing-uat-eservice-event-consumer"
+  TOPIC_STARTING_OFFSET: "earliest"
+
+deployment: 
+  envFromConfigmaps:
+    KAFKA_BROKERS: "common-kafka.KAFKA_BROKERS"
+    KAFKA_TOPIC: "common-kafka.ESERVICE_TOPIC"
+  envFromFieldRef:
+    KAFKA_CLIENT_ID: "metadata.name"
+    AWS_ROLE_SESSION_NAME: "metadata.name"
