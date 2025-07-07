@@ -7,7 +7,7 @@ service:
   create: true
   portName: http
   containerPort: 8080
-  targetGroupArn: "arn:aws:elasticloadbalancing:eu-south-1:637423185147:targetgroup/uat-tracing-api/c77a14bbdaabb03b"
+  targetGroupArn: "arn:aws:elasticloadbalancing:eu-south-1:637423185147:targetgroup/uat-tracing-api/53e54af589e2661b"
 
 configmap:
   ACCEPTED_AUDIENCES: "uat.interop.pagopa.it/m2m"
