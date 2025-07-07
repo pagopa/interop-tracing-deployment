@@ -123,3 +123,7 @@ data:
     GRANT SELECT ON TABLE "${NAMESPACE}_tracing".delegations TO
       tracing_processing_user,
       tracing_readonly_user;
+
+  V1.1.1__Operations_Tenant_Fix.sql: |-
+    GRANT UPDATE ON TABLE "${NAMESPACE}_tracing".tenants TO
+      tracing_operations_user;
