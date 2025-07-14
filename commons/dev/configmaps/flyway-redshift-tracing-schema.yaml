@@ -17,25 +17,15 @@ data:
       tracing_be_enriched_data_handler_${NAMESPACE};
 
     CREATE TABLE IF NOT EXISTS tracing.traces (
-      id UUID PRIMARY KEY,
-      tracing_id UUID,
-      submitter_id UUID,
+      id VARCHAR(36) PRIMARY KEY,
+      tracing_id VARCHAR(36),
+      submitter_id VARCHAR(36),
       date TIMESTAMP NOT NULL,
-      purpose_id UUID,
-      purpose_name VARCHAR(255),
+      purpose_id VARCHAR(36),
+      token_id VARCHAR(36),
       status INTEGER,
       requests_count INTEGER,
-      eservice_id UUID,
-      consumer_id UUID,
-      consumer_origin VARCHAR(255),
-      consumer_name VARCHAR(255),
-      consumer_external_id UUID,
-      producer_id UUID,
-      producer_name VARCHAR(255),
-      producer_origin VARCHAR(255),
-      producer_external_id UUID,
-      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      token_id UUID
+      created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
     );
 
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE tracing.traces TO
