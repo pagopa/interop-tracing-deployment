@@ -190,10 +190,9 @@ jobs:
     needs: [ initChecks, create_runner, tf_apply_secrets ]
     secrets: inherit
     if: ${{ always() && (inputs.run_k8s_workflow && ((!inputs.run_tf_apply_secrets_workflow && needs.tf_apply_secrets.result == 'skipped') || (inputs.run_tf_apply_secrets_workflow && needs.tf_apply_secrets.result == 'success'))) }}
-    uses: pagopa/interop-infra-commons/.github/workflows/common-k8s-deploy.yaml@d03f63489d1a95d6c0595b5727abb6045f0aa2ba # v1.23.2
+    uses: pagopa/interop-infra-commons/.github/workflows/common-k8s-deploy.yaml@v1.23.3
     with:
       environment: ${{ inputs.environment }}
-      timeout_seconds: 300
       infra_commons_tag: ${{ needs.initChecks.outputs.infra_commons_tag_computed }}
 
   delete_runner:
