@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: common-flyway-redshift-tracing-schema
-  namespace: dev-analytics
+  namespace: dev
 data:
   V1__Tracing_Schema.sql: |-
     CREATE SCHEMA IF NOT EXISTS tracing;
