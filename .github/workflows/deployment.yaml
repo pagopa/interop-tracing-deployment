@@ -190,7 +190,7 @@ jobs:
     needs: [ initChecks, create_runner, tf_apply_secrets ]
     secrets: inherit
     if: ${{ always() && (inputs.run_k8s_workflow && ((!inputs.run_tf_apply_secrets_workflow && needs.tf_apply_secrets.result == 'skipped') || (inputs.run_tf_apply_secrets_workflow && needs.tf_apply_secrets.result == 'success'))) }}
-    uses: pagopa/interop-infra-commons/.github/workflows/common-k8s-deploy.yaml@v1.24.0
+    uses: pagopa/interop-infra-commons/.github/workflows/common-k8s-deploy.yaml@v1.24.1
     with:
       environment: ${{ inputs.environment }}
       infra_commons_tag: ${{ needs.initChecks.outputs.infra_commons_tag_computed }}
@@ -199,7 +199,7 @@ jobs:
     name: Delete Self-Hosted Runner
     needs: [ create_runner, deploy, tf_apply_secrets ]
     if: ${{ always() && ( (inputs.run_k8s_workflow && ((!inputs.run_tf_apply_secrets_workflow && needs.tf_apply_secrets.result == 'skipped') || inputs.run_tf_apply_secrets_workflow)) || inputs.run_tf_apply_secrets_workflow ) }}
-    runs-on: ubuntu-22.0481deb4281deb42
+    runs-on: ubuntu-22.04
     environment: ${{ inputs.environment }}
     strategy:
       matrix:
