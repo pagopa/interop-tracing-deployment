@@ -8,6 +8,8 @@ service:
   portName: http
   containerPort: 8080
   targetGroupArn: "arn:aws:elasticloadbalancing:eu-south-1:590183909663:targetgroup/dev-tracing-api/9ee153fb0a27a366"
+  targetType: "ip"
+  ipAddressType: "ipv4"
 
 configmap:
   ACCEPTED_AUDIENCES: "http://localhost:4001" #TOCHECK

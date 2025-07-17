@@ -8,6 +8,8 @@ service:
   portName: http
   containerPort: 8080
   targetGroupArn: "arn:aws:elasticloadbalancing:eu-south-1:537124933279:targetgroup/qa-tracing-api/e0036be6cda6ed26"
+  targetType: "ip"
+  ipAddressType: "ipv4"
 
 configmap:
   ACCEPTED_AUDIENCES: "qa.interop.pagopa.it/m2m"
