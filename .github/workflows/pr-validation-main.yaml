@@ -1,5 +1,5 @@
 name: PR Validation - Main Starter
-run-name: "${{ github.ref_name }} / PR Validation workflow - Main Starter"
+run-name: "PR Validation"
 
 on:
   pull_request:
