@@ -8,13 +8,13 @@ data:
     CREATE SCHEMA IF NOT EXISTS tracing;
 
     GRANT USAGE ON SCHEMA tracing TO
-      tracing_be_enriched_data_handler_${NAMESPACE};
+      ${NAMESPACE}_tracing_enriched_data_handler_user;
 
     GRANT USAGE ON SCHEMA tracing TO GROUP
       readonly_group;
 
     GRANT CREATE, ALTER, DROP ON SCHEMA tracing TO 
-      tracing_be_enriched_data_handler_${NAMESPACE};
+      ${NAMESPACE}_tracing_enriched_data_handler_user;
 
     CREATE TABLE IF NOT EXISTS tracing.traces (
       id VARCHAR(36) PRIMARY KEY,
@@ -29,4 +29,4 @@ data:
     );
 
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE tracing.traces TO
-      tracing_be_enriched_data_handler_${NAMESPACE};
+      ${NAMESPACE}_tracing_enriched_data_handler_user;
