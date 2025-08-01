@@ -1,5 +1,4 @@
-name: PR Validation - Main Starter
-run-name: "PR Validation"
+name: PR Validation
 
 on:
   pull_request:
@@ -60,9 +59,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [att, dev, qa, uat]
+        environment: [dev, qa, uat, att]
     secrets: inherit
-    uses: pagopa/interop-infra-commons/.github/workflows/common-deployment-values-validation.yaml@359432bdb2b61c26fd2a2a79e5aded2da1848809 # v1.27.0
+    uses: pagopa/interop-infra-commons/.github/workflows/common-deployment-values-validation.yaml@7c6b84d0c1b013cbab0655215956aa83024153e3 # v1.27.3
     with:
       infra_commons_tag: ${{ needs.extract-infra-commons-tag.outputs.resolved_infra_commons_tag }}
       environment: ${{ matrix.environment }}
