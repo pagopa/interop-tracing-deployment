@@ -1,6 +1,7 @@
 namespace: "qa"
 
 cronjob:
+  suspend: true
   env:
     LOG_LEVEL: "info"
   image:
