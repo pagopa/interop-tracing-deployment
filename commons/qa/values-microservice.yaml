@@ -2,7 +2,6 @@ namespace: "qa"
 techStack: "nodejs"
 
 deployment:
-  replicas: 0
   env:
     LOG_LEVEL: "info"
   image:
