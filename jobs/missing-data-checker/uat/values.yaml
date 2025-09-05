@@ -2,7 +2,7 @@ name: "tracing-be-missing-data-checker"
 
 configmap:
   APPLICATION_NAME: "tracing-missing-data-checker"
-  API_OPERATIONS_BASEURL: "http://tracing-be-operations.att:8080"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.uat:8080"
   DAYS_OFFSET_FROM_TODAY: "1"
 
 cronjob:
