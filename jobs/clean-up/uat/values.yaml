@@ -2,7 +2,7 @@ name: "tracing-be-clean-up"
 
 configmap:
   APPLICATION_NAME: "tracing-clean-up"
-  API_OPERATIONS_BASEURL: "http://tracing-be-operations.att:8080"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.uat:8080"
 
 cronjob:
   schedule: "50 23 * * *"
