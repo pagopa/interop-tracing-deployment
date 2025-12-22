@@ -1,0 +1,21 @@
+name: "tracing-be-tenant-event-consumer"
+
+serviceAccount:
+  roleArn: "arn:aws:iam::{{.Values.local.awsAccountId}}:role/tracing-be-tenant-event-consumer-{{.Values.local.env}}"
+
+service:
+  create: false
+
+configmap:
+  APPLICATION_NAME: "tracing-tenant-event-consumer"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.{{.Values.namespace}}:8080"
+  KAFKA_GROUP_ID: "tracing-{{.Values.namespace}}-tenant-event-consumer"
+  TOPIC_STARTING_OFFSET: "earliest"
+
+deployment:
+  envFromConfigmaps:
+    KAFKA_BROKERS: "common-kafka.KAFKA_BROKERS"
+    KAFKA_TOPIC: "common-kafka.TENANT_TOPIC"
+  envFromFieldRef:
+    KAFKA_CLIENT_ID: "metadata.name"
+    AWS_ROLE_SESSION_NAME: "metadata.name"

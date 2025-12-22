@@ -1,0 +1,12 @@
+name: "tracing-be-missing-data-checker"
+
+configmap:
+  APPLICATION_NAME: "tracing-missing-data-checker"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.{{.Values.namespace}}:8080"
+  DAYS_OFFSET_FROM_TODAY: "1"
+
+cronjob:
+  schedule: "50 23 * * *"
+  timeZone: "Europe/Rome"
+  concurrencyPolicy: "Forbid"
+  activeDeadlineSeconds: 3600
