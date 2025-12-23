@@ -1,0 +1,56 @@
+name: "tracing-be-operations"
+
+serviceAccount:
+  roleArn: "arn:aws:iam::{{.Values.local.awsAccountId}}:role/tracing-be-operations-{{.Values.namespace}}"
+
+service:
+  create: true
+  portName: http
+  containerPort: 8080
+
+configmap:
+  DB_SCHEMA_NAME: "{{.Values.namespace}}_tracing"
+  APPLICATION_NAME: "tracing-operations"
+  S3_BUCKET_NAME: "interop-tracing-files-{{.Values.namespace}}"
+
+deployment:
+  flywayInitContainer:
+    create: true
+    migrationsConfigmap: "common-flyway-tracing-schema"
+    env:
+      FLYWAY_CREATE_SCHEMAS: true
+      FLYWAY_PLACEHOLDER_REPLACEMENT: true
+      FLYWAY_PLACEHOLDERS_NAMESPACE: "{{.Values.namespace}}"
+      FLYWAY_URL: jdbc:postgresql://$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)
+      FLYWAY_SCHEMAS: "{{.Values.namespace}}_tracing"
+    envFromConfigmaps:
+      POSTGRES_HOST: "common-tracing-store.DB_HOST_RW"
+      POSTGRES_PORT: "common-tracing-store.DB_PORT"
+      POSTGRES_DB: "common-tracing-store.DB_NAME"
+    envFromSecrets:
+      FLYWAY_USER: "tracing-store-flyway-user.username"
+      FLYWAY_PASSWORD: "tracing-store-flyway-user.password"
+
+  env:
+    HOST: "0.0.0.0"
+    PORT: 8080
+  envFromConfigmaps:
+    DB_HOST: "common-tracing-store.DB_HOST_RW"
+    DB_NAME: "common-tracing-store.DB_NAME"
+    DB_PORT: "common-tracing-store.DB_PORT"
+    DB_USE_SSL: "common-tracing-store.DB_USE_SSL"
+  envFromSecrets:
+    DB_USERNAME: "tracing-store-operations-user.username"
+    DB_PASSWORD: "tracing-store-operations-user.password"
+  livenessProbe:
+    httpGet:
+      path: "/status"
+      port: http
+    periodSeconds: 5
+    initialDelaySeconds: 15
+  readinessProbe:
+    httpGet:
+      path: "/status"
+      port: http
+    periodSeconds: 5
+    initialDelaySeconds: 15

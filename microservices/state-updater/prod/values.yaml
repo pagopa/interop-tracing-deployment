@@ -1,0 +1,14 @@
+name: "tracing-be-state-updater"
+
+serviceAccount:
+  roleArn: "arn:aws:iam::{{.Values.local.awsAccountId}}:role/tracing-be-state-updater-{{.Values.namespace}}"
+
+service:
+  create: false
+
+configmap:
+  APPLICATION_NAME: "tracing-state-updater"
+  SQS_ENDPOINT_PROCESSING_ERROR_QUEUE: "https://sqs.eu-south-1.amazonaws.com/{{.Values.local.awsAccountId}}/tracing-processing-error-{{.Values.namespace}}"
+  SQS_ENDPOINT_ENRICHER_STATE_QUEUE: "https://sqs.eu-south-1.amazonaws.com/{{.Values.local.awsAccountId}}/tracing-enricher-state-{{.Values.namespace}}"
+  CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "3"
+  API_OPERATIONS_BASEURL: "http://tracing-be-operations.{{.Values.namespace}}:8080"
