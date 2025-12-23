@@ -1,25 +1,25 @@
 images:
   microservices:
     api:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
     operations:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
     processing:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
     enriched-data-handler:
       tag: "1.0.0-RC11"
     state-updater:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
     eservice-event-consumer:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
     purpose-event-consumer:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
     tenant-event-consumer:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
     delegation-event-consumer:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
   jobs:
     missing-data-checker:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
     clean-up:
-      tag: "1.0.0-RC16"
+      tag: "1.0.0RC17"
