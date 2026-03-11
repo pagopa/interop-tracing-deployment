@@ -75,3 +75,61 @@ data:
     GRANT SELECT ON TABLE "${NAMESPACE}_tracing".delegations TO
       tracing_processing_user,
       tracing_readonly_user;
+
+  V1.1.2__AlignEnvironment.sql: |-
+    GRANT USAGE ON SCHEMA ${NAMESPACE}_tracing TO
+      tracing_readonly_user;
+
+    GRANT SELECT, INSERT, DELETE ON TABLE "${NAMESPACE}_tracing".tenants TO
+      tracing_operations_user;
+
+    GRANT SELECT ON "${NAMESPACE}_tracing".tenants TO
+      tracing_processing_user,
+      tracing_readonly_user,
+      tracing_operations_user;
+
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".eservices TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".eservices TO
+      tracing_processing_user,
+      tracing_readonly_user;
+
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".purposes TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".purposes TO
+      tracing_processing_user,
+      tracing_readonly_user;
+
+    GRANT SELECT, INSERT, UPDATE ON TABLE "${NAMESPACE}_tracing".tracings TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".tracings TO
+      tracing_processing_user,
+      tracing_readonly_user;
+
+    GRANT SELECT, INSERT, UPDATE ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
+      tracing_operations_user;
+
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
+      tracing_readonly_user,
+      tracing_operations_user;
+
+    ALTER TABLE "${NAMESPACE}_tracing".tenants
+      ALTER COLUMN name DROP NOT NULL,
+      ALTER COLUMN origin DROP NOT NULL,
+      ALTER COLUMN external_id DROP NOT NULL;
+
+    ALTER TABLE "${NAMESPACE}_tracing".tracings
+      ALTER COLUMN created_at TYPE TIMESTAMPTZ,
+      ALTER COLUMN updated_at TYPE TIMESTAMPTZ;
+
+    ALTER TABLE "${NAMESPACE}_tracing".purposes_errors
+      ALTER COLUMN created_at TYPE TIMESTAMPTZ;
+
+    ALTER TABLE "${NAMESPACE}_tracing".tracings 
+      DROP CONSTRAINT tracings_tenant_id_fkey;
+
+    ALTER TABLE "${NAMESPACE}_tracing".purposes_errors 
+      DROP CONSTRAINT purposes_errors_tracing_id_fkey;
