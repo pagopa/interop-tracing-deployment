@@ -7,7 +7,6 @@ service:
   create: false
 
 configmap:
-  DB_SCHEMA_NAME: "{{.Values.namespace}}_traces"
   APPLICATION_NAME: "tracing-enriched-data-handler"
   SQS_ENRICHED_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/{{.Values.local.awsAccountId}}/tracing-enriched-upload-{{.Values.namespace}}"
   SQS_ENRICHER_STATE_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/{{.Values.local.awsAccountId}}/tracing-enricher-state-{{.Values.namespace}}"
