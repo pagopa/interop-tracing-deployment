@@ -18,6 +18,10 @@ deployment:
       cpu: "1"
       memory: "2Gi"
 
+local:
+  awsAccountId: "590183909663"
+  env: "dev"
+
 autoscaling:
   keda:
     create: true
