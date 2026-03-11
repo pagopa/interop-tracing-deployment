@@ -1,17 +1,17 @@
 name: "tracing-be-enriched-data-handler"
 
 serviceAccount:
-  roleArn: "arn:aws:iam::590183909663:role/tracing-be-enriched-data-handler-dev"
+  roleArn: "arn:aws:iam::{{.Values.local.awsAccountId}}:role/tracing-be-enriched-data-handler-{{.Values.namespace}}"
 
 service:
   create: false
 
 configmap:
-  DB_SCHEMA_NAME: "dev_traces"
+  DB_SCHEMA_NAME: "{{.Values.namespace}}_traces"
   APPLICATION_NAME: "tracing-enriched-data-handler"
-  SQS_ENRICHED_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-enriched-upload-dev" #TOCHECK NAMING
-  SQS_ENRICHER_STATE_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-enricher-state-dev" #TOCHECK NAMING
-  S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-dev"
+  SQS_ENRICHED_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/{{.Values.local.awsAccountId}}/tracing-enriched-upload-{{.Values.namespace}}"
+  SQS_ENRICHER_STATE_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/{{.Values.local.awsAccountId}}/tracing-enricher-state-{{.Values.namespace}}"
+  S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-{{.Values.namespace}}"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"
 
 deployment:
@@ -21,9 +21,9 @@ deployment:
     env:
       FLYWAY_CREATE_SCHEMAS: true
       FLYWAY_PLACEHOLDER_REPLACEMENT: true
-      FLYWAY_PLACEHOLDERS_NAMESPACE: "dev"
+      FLYWAY_PLACEHOLDERS_NAMESPACE: "{{.Values.namespace}}"
       FLYWAY_URL: jdbc:postgresql://$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)
-      FLYWAY_SCHEMAS: "dev_traces"
+      FLYWAY_SCHEMAS: "{{.Values.namespace}}_traces"
     envFromConfigmaps:
       POSTGRES_HOST: "common-tracing-store.DB_HOST_RW"
       POSTGRES_PORT: "common-tracing-store.DB_PORT"
