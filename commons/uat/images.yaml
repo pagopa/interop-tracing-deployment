@@ -18,7 +18,7 @@ images:
       tag: "1.0.0-RC25"
     delegation-event-consumer:
       tag: "1.0.0-RC25"
-  job:
+  jobs:
     missing-data-checker:
       tag: "1.0.0-RC25"
     clean-up:
