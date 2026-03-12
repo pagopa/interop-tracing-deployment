@@ -1,5 +1,5 @@
 images:
-  microservice25
+  microservices:
     api:
       tag: "1.0.0-RC25"
     operations:
@@ -23,4 +23,3 @@ images:
       tag: "1.0.0-RC25"
     clean-up:
       tag: "1.0.0-RC25"
-      
