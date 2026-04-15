@@ -143,3 +143,4 @@ data:
       ADD COLUMN severity VARCHAR(255) NOT NULL 
       DEFAULT 'INVALID' 
       CHECK (severity IN ('INVALID', 'WARNING'));
+      
