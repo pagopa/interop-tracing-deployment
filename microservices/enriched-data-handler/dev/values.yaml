@@ -37,14 +37,16 @@ deployment:
       TRACING_STORE_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
       TRACING_STORE_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
       TRACING_STORE_DB_SCHEMA_NAME: "common-tracing-store.TRACING_STORE_DB_SCHEMA_TRACES"
-      TRACING_STORE_DB_HOST: "common-tracing-store.TRACING_STORE_DB_HOST_RO"
-      TRACING_STORE_DB_NAME: "common-tracing-store.TRACING_STORE_DB_NAME"
-      TRACING_STORE_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
-      TRACING_STORE_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
-      TRACING_STORE_DB_SCHEMA_NAME: "common-tracing-store.TRACING_STORE_DB_SCHEMA_TRACES"
+      ANALYTICS_DB_HOST: "common-tracing-store.TRACING_STORE_DB_HOST_RO"
+      ANALYTICS_DB_NAME: "common-tracing-store.TRACING_STORE_DB_NAME"
+      ANALYTICS_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
+      ANALYTICS_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
+      ANALYTICS_DB_SCHEMA_NAME: "common-tracing-store.TRACING_STORE_DB_SCHEMA_TRACES"
   envFromSecrets:
       TRACING_STORE_DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
       TRACING_STORE_DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"
+      ANALYTICS_DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
+      ANALYTICS_DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"
 
   envFromFieldRef:
     MERGE_TABLE_SUFFIX: "metadata.uid"
