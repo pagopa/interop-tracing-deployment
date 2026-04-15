@@ -133,3 +133,13 @@ data:
 
     ALTER TABLE "${NAMESPACE}_tracing".purposes_errors 
       DROP CONSTRAINT purposes_errors_tracing_id_fkey;
+
+  V1.2__Refactoring_adding_WARNING_state.sql: |-
+    ALTER TABLE "${NAMESPACE}_tracing".tracings 
+      DROP CONSTRAINT tracings_state_check,
+      ADD CONSTRAINT tracings_state_check CHECK (state IN ('PENDING', 'COMPLETED', 'MISSING', 'ERROR', 'WARNING'));
+    
+    ALTER TABLE "${NAMESPACE}_tracing".purposes_errors 
+      ADD COLUMN severity VARCHAR(255) NOT NULL 
+      DEFAULT 'INVALID' 
+      CHECK (severity IN ('INVALID', 'WARNING'));
