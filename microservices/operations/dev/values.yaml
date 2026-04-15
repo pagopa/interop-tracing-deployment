@@ -40,7 +40,7 @@ deployment:
     TRACING_STORE_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
     TRACING_STORE_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
   envFromSecrets:
-    DB_USERNAME: "tracing-store-operations-user.username"
+    TRACING_STORE_DB_USERNAME: "tracing-store-operations-user.username"
     DB_PASSWORD: "tracing-store-operations-user.password"
   livenessProbe:
     httpGet:
