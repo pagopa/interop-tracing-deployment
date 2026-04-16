@@ -41,7 +41,7 @@ deployment:
     TRACING_STORE_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
   envFromSecrets:
     TRACING_STORE_DB_USERNAME: "tracing-store-operations-user.username"
-    DB_PASSWORD: "tracing-store-operations-user.password"
+    TRACING_STORE_DB_PASSWORD: "tracing-store-operations-user.password"
   livenessProbe:
     httpGet:
       path: "/status"
