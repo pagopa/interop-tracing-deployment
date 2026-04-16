@@ -154,3 +154,7 @@ data:
       
     GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".tracings TO
       tracing_state_updater_user;
+
+  V1.2.3__Grant_ALL_State_Updater_Purposes_Errors.sql: |-
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
+      tracing_state_updater_user;
