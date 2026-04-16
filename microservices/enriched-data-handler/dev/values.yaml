@@ -36,7 +36,7 @@ deployment:
       TRACING_STORE_DB_NAME: "common-tracing-store.TRACING_STORE_DB_NAME"
       TRACING_STORE_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
       TRACING_STORE_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
-      TRACING_STORE_DB_SCHEMA_NAME: "common-tracing-store.TRACING_STORE_DB_SCHEMA_TRACES"
+      TRACING_STORE_DB_SCHEMA_NAME: "common-tracing-store.TRACING_STORE_DB_SCHEMA_TRACING"
       ANALYTICS_DB_HOST: "common-tracing-store.TRACING_STORE_DB_HOST_RW"
       ANALYTICS_DB_NAME: "common-tracing-store.TRACING_STORE_DB_NAME"
       ANALYTICS_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
