@@ -147,3 +147,10 @@ data:
   V1.2.1__Grant_Enriched_Data_Handler_Select_Tracings.sql: |-
     GRANT SELECT ON TABLE "${NAMESPACE}_tracing".tracings TO
       tracing_enriched_data_handler_user;
+
+  V1.2.2__Grant_ALL_State_Updater_Tracings.sql: |-
+    GRANT USAGE ON SCHEMA ${NAMESPACE}_tracing TO
+      tracing_state_updater_user;
+      
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".tracings TO
+      tracing_state_updater_user;
