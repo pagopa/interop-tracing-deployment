@@ -143,3 +143,7 @@ data:
       ADD COLUMN severity VARCHAR(255) NOT NULL 
       DEFAULT 'INVALID' 
       CHECK (severity IN ('INVALID', 'WARNING'));
+
+  V1.2.1__Grant_Enriched_Data_Handler_Select_Tracings.sql: |-
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".tracings TO
+      tracing_enriched_data_handler_user;
