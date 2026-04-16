@@ -10,7 +10,6 @@ configmap:
   TRACING_STORE_DB_SCHEMA_NAME: "dev_tracing"
   APPLICATION_NAME: "tracing-processing"
   SQS_TRACING_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-upload-dev"
-  SQS_PROCESSING_ERROR_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-processing-error-dev"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"
   S3_BUCKET_NAME: "tracing-files-dev"
   S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-dev"
