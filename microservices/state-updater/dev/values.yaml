@@ -33,7 +33,7 @@ deployment:
       FLYWAY_PASSWORD: "tracing-store-flyway-user.password"
 
   envFromConfigmaps:
-      TRACING_STORE_DB_HOST: "common-tracing-store.TRACING_STORE_DB_HOST_RO"
+      TRACING_STORE_DB_HOST: "common-tracing-store.TRACING_STORE_DB_HOST_RW"
       TRACING_STORE_DB_NAME: "common-tracing-store.TRACING_STORE_DB_NAME"
       TRACING_STORE_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
       TRACING_STORE_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
