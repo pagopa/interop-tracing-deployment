@@ -14,7 +14,7 @@ configmap:
   S3_BUCKET_NAME: "tracing-files-qa"
   S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-qa"
   BATCH_SIZE: 500
-  SQS_PROCESSING_RESULTS_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/590183909663/tracing-processing-results-dev"
+  SQS_PROCESSING_RESULTS_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/537124933279/tracing-processing-results-qa"
   S3_TRACING_ERRORS_BUCKET_NAME: "tracing-errors-files-qa"
 
 deployment:

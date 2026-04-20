@@ -1,5 +1,5 @@
 images:
-  microservi1es:
+  microservices:
    api:
       tag: "1.1.0-RC1"
    operations:
@@ -18,7 +18,7 @@ images:
       tag: "1.1.0-RC1"
    delegation-event-consumer:
       tag: "1.1.0-RC1"
-  j1bs:
+  jobs:
    missing-data-checker:
       tag: "1.1.0-RC1"
    clean-up:
