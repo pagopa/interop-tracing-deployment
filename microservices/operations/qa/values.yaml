@@ -9,7 +9,7 @@ service:
   containerPort: 8080
 
 configmap:
-  DB_SCHEMA_NAME: "qa_tracing"
+  TRACING_STORE_DB_SCHEMA_NAME: "qa_tracing"
   APPLICATION_NAME: "tracing-operations"
   S3_BUCKET_NAME: "interop-tracing-files-qa"
 
