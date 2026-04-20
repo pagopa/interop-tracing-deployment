@@ -43,3 +43,4 @@ deployment:
   envFromSecrets:
       TRACING_STORE_DB_USERNAME: "tracing-store-state-updater-user.username"
       TRACING_STORE_DB_PASSWORD: "tracing-store-state-updater-user.password"
+      
