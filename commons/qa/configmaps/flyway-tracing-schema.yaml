@@ -123,3 +123,25 @@ data:
     GRANT SELECT ON TABLE "${NAMESPACE}_tracing".delegations TO
       tracing_processing_user,
       tracing_readonly_user;
+  
+  V1.2__Refactoring_adding_WARNING_state.sql: |-
+    ALTER TABLE "${NAMESPACE}_tracing".tracings 
+      DROP CONSTRAINT tracings_state_check,
+      ADD CONSTRAINT tracings_state_check CHECK (state IN ('PENDING', 'COMPLETED', 'MISSING', 'ERROR', 'WARNING'));
+    
+    ALTER TABLE "${NAMESPACE}_tracing".purposes_errors 
+      ADD COLUMN severity VARCHAR(255) NOT NULL 
+      DEFAULT 'INVALID' 
+      CHECK (severity IN ('INVALID', 'WARNING'));
+    
+    GRANT SELECT ON TABLE "${NAMESPACE}_tracing".tracings TO
+      tracing_enriched_data_handler_user;
+    
+    GRANT USAGE ON SCHEMA ${NAMESPACE}_tracing TO
+      tracing_state_updater_user;
+    
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".tracings TO
+      tracing_state_updater_user;
+    
+    GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE "${NAMESPACE}_tracing".purposes_errors TO
+      tracing_state_updater_user;
