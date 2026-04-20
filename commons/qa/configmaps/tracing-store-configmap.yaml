@@ -4,8 +4,10 @@ metadata:
   name: common-tracing-store
   namespace: qa
 data:
-  DB_HOST_RW: "tracing-store-qa.cluster-cvuuic8o0djg.eu-south-1.rds.amazonaws.com"
-  DB_HOST_RO: "tracing-store-qa.cluster-ro-cvuuic8o0djg.eu-south-1.rds.amazonaws.com"
-  DB_NAME: "tracing_store"
-  DB_PORT: "5432"
-  DB_USE_SSL: "true"
+  TRACING_STORE_DB_HOST_RW: "tracing-store-qa.cluster-cvuuic8o0djg.eu-south-1.rds.amazonaws.com"
+  TRACING_STORE_DB_HOST_RO: "tracing-store-qa.cluster-ro-cvuuic8o0djg.eu-south-1.rds.amazonaws.com"
+  TRACING_STORE_DB_NAME: "tracing_store"
+  TRACING_STORE_DB_SCHEMA_TRACING: "qa_tracing"
+  TRACING_STORE_DB_SCHEMA_TRACES: "qa_traces"
+  TRACING_STORE_DB_PORT: "5432"
+  TRACING_STORE_DB_USE_SSL: "true"
