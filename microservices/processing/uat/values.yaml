@@ -7,16 +7,16 @@ service:
   create: false
 
 configmap:
-  TRACING_STORE_DB_SCHEMA_NAME: "{{.Values.namespace}}_tracing"
+  TRACING_STORE_DB_SCHEMA_NAME: "uat_tracing"
   APPLICATION_NAME: "tracing-processing"
-  SQS_TRACING_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-upload-{{.Values.namespace}}"
-  SQS_PROCESSING_ERROR_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-processing-error-{{.Values.namespace}}"
+  SQS_TRACING_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-upload-uat"
+  SQS_PROCESSING_ERROR_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-processing-error-uat"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"
-  S3_BUCKET_NAME: "tracing-files-{{.Values.namespace}}"
-  S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-{{.Values.namespace}}"
+  S3_BUCKET_NAME: "tracing-files-uat"
+  S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-uat"
   BATCH_SIZE: 500
-  SQS_PROCESSING_RESULTS_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-processing-results-{{.Values.namespace}}"
-  S3_TRACING_ERRORS_BUCKET_NAME: "tracing-errors-files-{{.Values.namespace}}"
+  SQS_PROCESSING_RESULTS_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-processing-results-uat"
+  S3_TRACING_ERRORS_BUCKET_NAME: "tracing-errors-files-uat"
 
 deployment:
   flywayInitContainer:

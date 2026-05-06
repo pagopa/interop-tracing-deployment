@@ -8,9 +8,9 @@ service:
 
 configmap:
   APPLICATION_NAME: "tracing-enriched-data-handler"
-  SQS_ENRICHED_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-enriched-upload-{{.Values.namespace}}"
-  SQS_ENRICHER_STATE_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-enricher-state-{{.Values.namespace}}"
-  S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-{{.Values.namespace}}"
+  SQS_ENRICHED_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-enriched-upload-uat"
+  SQS_ENRICHER_STATE_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/637423185147/tracing-enricher-state-uat"
+  S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-uat"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"
 
 deployment:
