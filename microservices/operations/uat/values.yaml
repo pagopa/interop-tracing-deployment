@@ -1,7 +1,7 @@
 name: "tracing-be-operations"
 
 serviceAccount:
-  roleArn: "arn:aws:iam::637423185147:role/tracing-be-operations-{{.Values.namespace}}"
+  roleArn: "arn:aws:iam::637423185147:role/tracing-be-operations-uat"
 
 service:
   create: true
@@ -9,9 +9,9 @@ service:
   containerPort: 8080
 
 configmap:
-  TRACING_STORE_DB_SCHEMA_NAME: "{{.Values.namespace}}_tracing"
+  TRACING_STORE_DB_SCHEMA_NAME: "uat_tracing"
   APPLICATION_NAME: "tracing-operations"
-  S3_BUCKET_NAME: "interop-tracing-files-{{.Values.namespace}}"
+  S3_BUCKET_NAME: "interop-tracing-files-uat"
 
 deployment:
   flywayInitContainer:
