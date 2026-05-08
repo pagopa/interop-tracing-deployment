@@ -7,7 +7,6 @@ service:
   create: false
 
 configmap:
-  DB_SCHEMA_NAME: "{{.Values.namespace}}_traces"
   APPLICATION_NAME: "tracing-enriched-data-handler"
   SQS_ENRICHED_UPLOAD_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/{{.Values.local.awsAccountId}}/tracing-enriched-upload-{{.Values.namespace}}"
   SQS_ENRICHER_STATE_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/{{.Values.local.awsAccountId}}/tracing-enricher-state-{{.Values.namespace}}"
@@ -33,12 +32,20 @@ deployment:
       FLYWAY_PASSWORD: "tracing-store-flyway-user.password"
 
   envFromConfigmaps:
-    DB_HOST: "common-tracing-store.DB_HOST_RW"
-    DB_NAME: "common-tracing-store.DB_NAME"
-    DB_PORT: "common-tracing-store.DB_PORT"
-    DB_USE_SSL: "common-tracing-store.DB_USE_SSL"
+    TRACING_STORE_DB_HOST: "common-tracing-store.TRACING_STORE_DB_HOST_RW"
+    TRACING_STORE_DB_NAME: "common-tracing-store.TRACING_STORE_DB_NAME"
+    TRACING_STORE_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
+    TRACING_STORE_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
+    TRACING_STORE_DB_SCHEMA_NAME: "common-tracing-store.TRACING_STORE_DB_SCHEMA_TRACING"
+    ANALYTICS_DB_HOST: "common-tracing-store.TRACING_STORE_DB_HOST_RW"
+    ANALYTICS_DB_NAME: "common-tracing-store.TRACING_STORE_DB_NAME"
+    ANALYTICS_DB_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
+    ANALYTICS_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
+    ANALYTICS_DB_SCHEMA_NAME: "common-tracing-store.TRACING_STORE_DB_SCHEMA_TRACES"
   envFromSecrets:
-    DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
-    DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"
+    TRACING_STORE_DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
+    TRACING_STORE_DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"
+    ANALYTICS_DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
+    ANALYTICS_DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"
   envFromFieldRef:
     MERGE_TABLE_SUFFIX: "metadata.uid"
