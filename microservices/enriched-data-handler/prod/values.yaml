@@ -24,9 +24,9 @@ deployment:
       FLYWAY_URL: jdbc:postgresql://$(POSTGRES_HOST):$(POSTGRES_PORT)/$(POSTGRES_DB)
       FLYWAY_SCHEMAS: "{{.Values.namespace}}_traces"
     envFromConfigmaps:
-      POSTGRES_HOST: "common-tracing-store.DB_HOST_RW"
-      POSTGRES_PORT: "common-tracing-store.DB_PORT"
-      POSTGRES_DB: "common-tracing-store.DB_NAME"
+      POSTGRES_HOST: "common-tracing-store.TRACING_STORE_DB_HOST_RW"
+      POSTGRES_PORT: "common-tracing-store.TRACING_STORE_DB_PORT"
+      POSTGRES_DB: "common-tracing-store.TRACING_STORE_DB_NAME"
     envFromSecrets:
       FLYWAY_USER: "tracing-store-flyway-user.username"
       FLYWAY_PASSWORD: "tracing-store-flyway-user.password"
