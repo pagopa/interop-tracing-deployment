@@ -43,7 +43,7 @@ deployment:
     ANALYTICS_DB_USE_SSL: "common-tracing-store.TRACING_STORE_DB_USE_SSL"
     ANALYTICS_DB_SCHEMA_NAME: "common-tracing-store.TRACING_STORE_DB_SCHEMA_TRACES"
   envFromSecrets:
-    RACING_STORE_DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
+    TRACING_STORE_DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
     TRACING_STORE_DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"
     ANALYTICS_DB_USERNAME: "tracing-store-enriched-data-handler-user.username"
     ANALYTICS_DB_PASSWORD: "tracing-store-enriched-data-handler-user.password"
