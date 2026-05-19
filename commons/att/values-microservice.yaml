@@ -17,3 +17,7 @@ deployment:
     limits:
       cpu: "2"
       memory: "2Gi"
+
+local:
+  awsAccountId: "225989375416"
+  env: "att"
