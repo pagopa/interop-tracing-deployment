@@ -4,8 +4,8 @@ metadata:
   name: common-tracing-store
   namespace: att
 data:
-  TRACING_STORE_DB_HOST_RW: "tracing-store-att.cluster-c72y6ow0q54b.eu-south-1.rds.amazonaws.com"
-  TRACING_STORE_DB_HOST_RO: "tracing-store-att.cluster-ro-c72y6ow0q54b.eu-south-1.rds.amazonaws.com"
+  TRACING_STORE_DB_HOST_RW: "tracing-store-att.cluster-c16yyemu8lz3.eu-south-1.rds.amazonaws.com"
+  TRACING_STORE_DB_HOST_RO: "tracing-store-att.cluster-ro-c16yyemu8lz3.eu-south-1.rds.amazonaws.com"
   TRACING_STORE_DB_NAME: "tracing_store"
   TRACING_STORE_DB_SCHEMA_TRACING: "att_tracing"
   TRACING_STORE_DB_SCHEMA_TRACES: "att_traces"
