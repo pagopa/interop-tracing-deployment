@@ -18,15 +18,15 @@ deployment:
       cpu: "1"
       memory: "2Gi"
 
-autoscaling:
-  keda:
-    create: true
-    minReplicaCount: 0
-    maxReplicaCount: 1
-    triggers:
-    - type: cron
-      metadata:
-        timezone: Europe/Rome
-        start: 0 8 * * 1-5
-        end: 0 20 * * 1-5
-        desiredReplicas: "1" # must be a string
+# autoscaling:
+#   keda:
+#     create: true
+#     minReplicaCount: 0
+#     maxReplicaCount: 1
+#     triggers:
+#     - type: cron
+#       metadata:
+#         timezone: Europe/Rome
+#         start: 0 8 * * 1-5
+#         end: 0 20 * * 1-5
+#         desiredReplicas: "1" # must be a string
