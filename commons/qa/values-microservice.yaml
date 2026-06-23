@@ -18,6 +18,7 @@ deployment:
       cpu: "1"
       memory: "2Gi"
 
+# QA env do not have Keda (yet)
 # autoscaling:
 #   keda:
 #     create: true
