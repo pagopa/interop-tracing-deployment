@@ -12,6 +12,7 @@ configmap:
   SQS_ENRICHER_STATE_ENDPOINT: "https://sqs.eu-south-1.amazonaws.com/537124933279/tracing-enricher-state-qa"
   S3_ENRICHED_BUCKET_NAME: "tracing-enriched-files-{{.Values.namespace}}"
   CONSUMER_POLLING_TIMEOUT_IN_SECONDS: "10"
+  ENRICH_TRACES_WITH_CONSUMER_PRODUCER_ESERVICE: "true"
 
 deployment:
   flywayInitContainer:
