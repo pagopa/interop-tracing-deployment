@@ -6,7 +6,7 @@ configmap:
   DAYS_OFFSET_FROM_TODAY: "1"
 
 cronjob:
-  schedule: "50 19 * * *"
+  schedule: "50 18 * * *"
   timeZone: "Europe/Rome"
   concurrencyPolicy: "Forbid"
   activeDeadlineSeconds: 3600
