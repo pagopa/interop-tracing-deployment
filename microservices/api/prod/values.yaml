@@ -17,6 +17,7 @@ configmap:
   API_OPERATIONS_BASEURL: "http://tracing-be-operations.{{.Values.namespace}}:8080"
   S3_BUCKET_NAME: "tracing-files-{{.Values.namespace}}"
   STORAGE_PATH_NAME: "/tmp"
+  MAX_UPLOAD_FILE_SIZE_BYTES: 209715200
 
 deployment:
   env:
