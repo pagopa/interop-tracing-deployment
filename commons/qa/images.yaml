@@ -1,26 +1,26 @@
 images:
   microservices:
    api:
-      tag: "1.1.2"
+      tag: "1.1.3"
    operations:
-      tag: "1.1.2"
+      tag: "1.1.3"
    processing:
-      tag: "1.1.2"
+      tag: "1.1.3"
    enriched-data-handler:
-      tag: "1.1.2"
+      tag: "1.1.3"
    state-updater:
-      tag: "1.1.2"
+      tag: "1.1.3"
    eservice-event-consumer:
-      tag: "1.1.2"
+      tag: "1.1.3"
    purpose-event-consumer:
-      tag: "1.1.2"
+      tag: "1.1.3"
    tenant-event-consumer:
-      tag: "1.1.2"
+      tag: "1.1.3"
    delegation-event-consumer:
-      tag: "1.1.2"
+      tag: "1.1.3"
   jobs:
    missing-data-checker:
-      tag: "1.1.2"
+      tag: "1.1.3"
    clean-up:
-      tag: "1.1.2"
+      tag: "1.1.3"
       
